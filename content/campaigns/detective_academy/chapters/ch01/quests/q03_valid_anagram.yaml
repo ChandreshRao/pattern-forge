@@ -3,7 +3,6 @@ chapter_id: ch01
 order: 3
 beat_id: B3
 theme_id: detective_academy
-refer_problem: refer_problems/strings/valid_anagram.py
 
 canon:
   title: "Scrambled Tip"

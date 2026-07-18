@@ -3,7 +3,6 @@ chapter_id: ch01
 order: 2
 beat_id: B2
 theme_id: detective_academy
-refer_problem: refer_problems/arrays/contains_duplicate.py
 
 canon:
   title: "Double Tags"

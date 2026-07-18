@@ -5,7 +5,6 @@ chapter_id: ch01
 order: 1
 beat_id: B1
 theme_id: detective_academy
-refer_problem: refer_problems/arrays/two_sum.py
 
 canon:
   title: "Paired Receipts"

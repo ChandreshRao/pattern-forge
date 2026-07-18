@@ -2,6 +2,8 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import type { ProgressPayload, ReflectionPayload } from '@/lib/types'
 import { Button } from '@/components/ui/button'
+import { NpcDialoguePanel } from '@/components/NpcDialoguePanel'
+import { cueForQuest } from '@/content/npcs'
 
 type LocState = {
   reflection?: ReflectionPayload
@@ -14,6 +16,7 @@ export function ReflectionPage() {
   const navigate = useNavigate()
   const state = (location.state || {}) as LocState
   const reflection = state.reflection
+  const cue = cueForQuest(questId)
 
   if (!reflection) {
     return (
@@ -27,12 +30,11 @@ export function ReflectionPage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-2xl px-6 py-12">
+    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.45 }}
-        className="rounded-md border border-[rgba(201,162,39,0.35)] bg-[rgba(28,40,56,0.75)] p-8 shadow-[0_0_40px_rgba(201,162,39,0.12)]"
       >
         <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.3em] text-[var(--color-lamp)]">
           Case closed
@@ -40,21 +42,31 @@ export function ReflectionPage() {
         <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl text-[var(--color-paper-bright)]">
           {reflection.success_line}
         </h1>
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="mt-8"
-        >
-          <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">
-            Pattern discovered
-          </p>
-          <p className="mt-2 font-[family-name:var(--font-display)] text-4xl text-[var(--color-lamp-glow)]">
-            {reflection.pattern_reveal_name}
-          </p>
-          <p className="mt-4 leading-relaxed text-[var(--color-paper)]/90">{reflection.why}</p>
-          <p className="mt-4 italic text-[var(--color-paper)]/70">{reflection.reflection_flavor}</p>
-        </motion.div>
+
+        <div className="mt-6">
+          <NpcDialoguePanel
+            npcId={cue.reflectionSpeaker}
+            expression={cue.reflectionExpression}
+            environment={cue.environment}
+            lines={[{ label: 'Debrief', text: reflection.reflection_flavor }]}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mt-6"
+            >
+              <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">
+                Pattern discovered
+              </p>
+              <p className="mt-2 font-[family-name:var(--font-display)] text-3xl text-[var(--color-lamp-glow)] sm:text-4xl">
+                {reflection.pattern_reveal_name}
+              </p>
+              <p className="mt-4 leading-relaxed text-[var(--color-paper)]/90">{reflection.why}</p>
+            </motion.div>
+          </NpcDialoguePanel>
+        </div>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

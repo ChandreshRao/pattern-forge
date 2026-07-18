@@ -54,3 +54,4 @@ frontend/*.local
 
 # Docker / Judge0 local data (if present)
 docker/**/data/
+refer_problems

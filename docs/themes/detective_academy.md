@@ -1,6 +1,6 @@
 # Theme pack — Detective Academy
 
-Machine-oriented twin will live at `content/themes/detective_academy.yaml` when content is scaffolded.
+Machine-oriented twin: `content/themes/detective_academy.yaml` (consumed by `scripts/validate_story.py`).
 
 ## Identity
 

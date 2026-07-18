@@ -7,7 +7,8 @@ How to turn a `refer_problems/` stub into a PatternForge quest.
 - Read `05_CONTENT_ENGINE.md` (schema)
 - Read `STORY_BIBLE.md` (beats + continuity)
 - Read `themes/detective_academy.md` (lexicon)
-- Prefer skill: `.cursor/skills/author-quest/SKILL.md`
+- Prefer skill: `.cursor/skills/author-quest/SKILL.md` (canon)
+- Prefer skill: `.cursor/skills/write-quest-story/SKILL.md` (story slots)
 
 ## Workflow
 
@@ -40,7 +41,9 @@ Pick the next free beat in `STORY_BIBLE.md`. Continuity must advance the case �
 
 ### 4. Fill story slots (theme only)
 
-Using Detective Academy lexicon:
+Use `.cursor/skills/write-quest-story/SKILL.md`. It walks beat brief → slots → mandatory validator.
+
+Using Detective Academy lexicon (`content/themes/detective_academy.yaml`):
 
 - `hook` — cold open
 - `briefing` — what the academy needs
@@ -54,16 +57,26 @@ Using Detective Academy lexicon:
 - Do not name the pattern/algorithm in pre-solve slots.
 - Do not add edge cases in prose that are not in `canon.tests`.
 - Metaphors must exist in the theme metaphor map.
+- Run `python scripts/validate_story.py <quest.yaml>` — exit 0 is required proof.
 
 ### 5. Wire campaign order
 
 Update `chapter.yaml` quest list / `order` fields. Unlock is sequential by `order` in Phase 1.
 
-### 6. Validate mentally (script later)
+### 6. Validate
+
+Story slots (required):
+
+```bash
+python scripts/validate_story.py path/to/quest.yaml
+```
+
+Must exit 0. See `scripts/validate_story.py` and fixtures under `scripts/fixtures/`.
+
+Also check:
 
 - [ ] Canon tests ≥ phase minimum
 - [ ] Examples ⊆ tests
-- [ ] No spoiler terms in pre-solve story
 - [ ] `beat_id` documented in story bible
 - [ ] Starters compile as stubs in all three languages
 

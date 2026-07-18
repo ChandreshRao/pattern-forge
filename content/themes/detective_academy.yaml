@@ -1,0 +1,96 @@
+# Machine-readable theme pack — Detective Academy
+# Human twin: docs/themes/detective_academy.md
+# Consumed by scripts/validate_story.py and write-quest-story skill.
+
+id: detective_academy
+world: Modern city police/detective training academy with a records-driven mystery
+voice: Procedural, concise, respectful of the learner's intelligence
+
+characters:
+  - name: Captain Mora
+    voice: Direct, short sentences, stakes-first
+  - name: Archivist Quin
+    voice: Dry, metaphor-friendly, never spoils the algorithm name
+
+# Proper-name fragments allowed in story (cast lock). Include titles and surnames.
+character_name_tokens:
+  - Captain
+  - Mora
+  - Archivist
+  - Quin
+
+metaphor_map:
+  hash_map: Case filing cabinet / tag → drawer index
+  hash_set: Evidence stamp log ("already logged?")
+  frequency_count: Letter tally on a courier slip
+  stack: Sealed evidence brackets / nesting seals
+  sliding_window: Moving surveillance window along a street
+  two_pointers: Two officers walking a line from opposite ends
+  linked_list: Informant chain / paperclip trail
+  running_minimum: Lowest chalk price seen so far on the board
+
+# Case-insensitive; matched with word boundaries where applicable.
+# Applied to pre-solve slots: hook, briefing, objective_in_world, success_line.
+banned_spoiler_terms:
+  - hash map
+  - hashmap
+  - hash set
+  - hashset
+  - sliding window
+  - two pointers
+  - two-pointers
+  - kadane
+  - dynamic programming
+  - bfs
+  - dfs
+  - trie
+  - binary search
+  - recursion
+  - memoization
+  - leetcode
+  - blind 75
+  - linear time
+  - constant time
+  - constant time lookup
+
+# Complexity / teaching phrases banned in reflection_flavor (and also catchable in pre-solve).
+banned_complexity_phrases:
+  - linear time
+  - constant time
+  - constant time lookup
+
+slot_budgets:
+  hook:
+    min_sentences: 1
+    max_sentences: 3
+    max_words: 80
+  briefing:
+    min_sentences: 1
+    max_sentences: 4
+    max_words: 100
+  objective_in_world:
+    min_sentences: 1
+    max_sentences: 1
+    max_words: 40
+  success_line:
+    min_sentences: 1
+    max_sentences: 1
+    max_words: 30
+  reflection_flavor:
+    min_sentences: 1
+    max_sentences: 2
+    max_words: 50
+
+# Pre-solve slots that must not spoil pattern / fake I/O.
+pre_solve_slots:
+  - hook
+  - briefing
+  - objective_in_world
+  - success_line
+
+all_story_slots:
+  - hook
+  - briefing
+  - objective_in_world
+  - success_line
+  - reflection_flavor

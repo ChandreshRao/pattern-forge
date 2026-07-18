@@ -1,0 +1,57 @@
+# Minimal fixture for scripts/validate_story.py — CLEAN story (must PASS).
+id: q01_two_sum
+chapter_id: ch01
+order: 1
+beat_id: B1
+theme_id: detective_academy
+refer_problem: refer_problems/arrays/two_sum.py
+
+canon:
+  title: "Paired Receipts"
+  pattern_id: hash_map
+  pattern_reveal_name: "Hash Map"
+  recognition_signals:
+    - pair_lookup
+  difficulty_rank: explorer
+  languages:
+    python:
+      function_name: two_sum
+      starter: |
+        def two_sum(nums, target):
+            pass
+  constraints_text: "Find two indices whose values sum to target."
+  examples:
+    - input: { nums: [2, 7, 11, 15], target: 9 }
+      output: [0, 1]
+  tests:
+    - id: t1
+      input: { nums: [2, 7, 11, 15], target: 9 }
+      expected: [0, 1]
+      hidden: false
+  hints:
+    - level: 1
+      text: "Clarify what two values must satisfy."
+  reflection:
+    why: "You looked up complements instead of checking every pair."
+    common_mistakes:
+      - "Using the same index twice"
+    complexity:
+      time: "O(n)"
+      space: "O(n)"
+  interview_reference: "LeetCode 1 — Two Sum"
+
+story:
+  hook: >
+    Rain ticks the night-desk lamp. Two evidence tag numbers sit in the
+    intake tray, waiting to match a sealed case code before the warrant window dies.
+  briefing: >
+    Captain Mora does not raise her voice. Find the pair of tags that add up to
+    the sealed code — wrong pair wastes the window. Archivist Quin leaves the
+    filing cabinet unlocked; speed matters more than a full drawer search.
+  objective_in_world: >
+    Identify which two tag indices sum to the sealed case code.
+  success_line: >
+    The warrant window holds; the paired tags clear intake.
+  reflection_flavor: >
+    Quin closes the cabinet. Somewhere in the same drawer, duplicate stamps
+    are already stacking up.

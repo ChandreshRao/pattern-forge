@@ -166,9 +166,28 @@ Runtime: `content/themes/{theme}.yaml` (characters, metaphor_map, banned_spoiler
 
 Same canon can later bind to another `theme_id` + new `story` slots (story packs).
 
-## Validation (later script)
+## Validation
+
+### Story slots (implemented)
+
+```bash
+python scripts/validate_story.py path/to/quest.yaml
+```
+
+Checks (theme-driven via `content/themes/{theme_id}.yaml`):
+
+- Story schema: all slots present and non-empty; `beat_id` / `theme_id` present
+- `beat_id` exists in `docs/STORY_BIBLE.md` (heading or 1b table row)
+- Pre-solve slots: no `banned_spoiler_terms`, no `pattern_reveal_name` / `pattern_id` variants
+- Pre-solve: no fake I/O patterns (arrays, `->`/`=>`, input/output phrasing)
+- `reflection_flavor`: no complexity teaching (`O(...)`, linear/constant time)
+- Cast lock: proper names limited to theme characters
+- Slot sentence/word budgets
+
+Fixtures: `scripts/fixtures/q01_two_sum_clean.yaml` (PASS), `scripts/fixtures/q01_two_sum_bad.yaml` (FAIL).
+
+### Canon / campaign (later script)
 
 - Schema required fields present
 - Every public example has a matching test
-- Pre-solve story fields contain no `banned_spoiler_terms` / pattern reveal names
-- `beat_id` exists in story bible for that campaign
+- Test count meets phase minimum

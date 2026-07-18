@@ -11,6 +11,7 @@
 | [06_AI_STRATEGY.md](06_AI_STRATEGY.md) | AI boundaries & story fill policy |
 | [07_ROADMAP.md](07_ROADMAP.md) | Phase 0 → long-term |
 | [08_VISUAL_STYLE.md](08_VISUAL_STYLE.md) | Living-storybook UI, portraits, asset pipeline |
+| [DEPLOY.md](DEPLOY.md) | Deploy sketch (Vercel + API + Judge0) |
 | [CONTENT_GUIDE.md](CONTENT_GUIDE.md) | How to author a quest |
 | [STORY_BIBLE.md](STORY_BIBLE.md) | Progressive Detective Academy narrative |
 | [themes/detective_academy.md](themes/detective_academy.md) | Theme lexicon & spoiler bans |

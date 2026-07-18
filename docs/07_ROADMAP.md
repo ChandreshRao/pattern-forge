@@ -12,11 +12,11 @@ Guest + 3 quests + Judge0 + reflection + unlock. See `01_PRD.md`.
 
 ## Phase 1b — Core DSA campaign
 
-10 quests, thicker tests, hint ladder, thin Codex v1, deploy sketch.
+10 quests, thicker tests, hint ladder UI, thin Codex v1, email+password auth (guest ephemeral), deploy sketch.
 
-## Phase 2 — Auth & sync
+## Phase 2 — Hosted auth & sync (optional upgrade)
 
-Clerk or Supabase Auth; merge guest progress; cloud persistence.
+Clerk or Supabase Auth; password reset / OAuth; merge guest session into account if desired; cloud DB.
 
 ## Phase 3 — Full Pattern Codex & mastery
 

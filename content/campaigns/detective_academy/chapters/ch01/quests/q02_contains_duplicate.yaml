@@ -77,6 +77,38 @@ canon:
       input: { nums: [1, 2, 3, 4, 5, 1] }
       expected: true
       hidden: true
+    - id: t9
+      input: { nums: [7, 8, 9, 10, 11, 12] }
+      expected: false
+      hidden: true
+    - id: t10
+      input: { nums: [2, 2] }
+      expected: true
+      hidden: true
+    - id: t11
+      input: { nums: [-100, 100, 0] }
+      expected: false
+      hidden: true
+    - id: t12
+      input: { nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 9] }
+      expected: true
+      hidden: true
+    - id: t13
+      input: { nums: [0] }
+      expected: false
+      hidden: true
+    - id: t14
+      input: { nums: [4, 3, 2, 1, 5, 6, 7, 3] }
+      expected: true
+      hidden: true
+    - id: t15
+      input: { nums: [9, 8, 7, 6, 5, 4, 3, 2, 1] }
+      expected: false
+      hidden: true
+    - id: t16
+      input: { nums: [1000000, -1000000, 1000000] }
+      expected: true
+      hidden: true
   hints:
     - level: 1
       text: "Clarify what it means for a value to appear twice."

@@ -1,12 +1,40 @@
 export type Language = 'python' | 'javascript' | 'typescript'
 
 export type ProgressPayload = {
-  guest_id: string
+  user_id: string | null
   campaign_id: string
   xp: number
   unlocked_quest_ids: string[]
   completed_quest_ids: string[]
   last_language: string | null
+  ephemeral?: boolean
+}
+
+export type AuthUser = {
+  id: string
+  email: string
+}
+
+export type AuthResponse = {
+  access_token: string
+  token_type: string
+  user: AuthUser
+}
+
+export type HintsResponse = {
+  quest_id: string
+  hints: Array<{ level: number; text: string }>
+}
+
+export type CodexEntry = {
+  pattern_id: string
+  pattern_reveal_name: string
+  why: string
+  quest_id: string
+}
+
+export type CodexResponse = {
+  patterns: CodexEntry[]
 }
 
 export type QuestSummary = {

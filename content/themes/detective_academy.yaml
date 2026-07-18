@@ -23,11 +23,16 @@ metaphor_map:
   hash_map: Case filing cabinet / tag → drawer index
   hash_set: Evidence stamp log ("already logged?")
   frequency_count: Letter tally on a courier slip
+  frequency_group: Bundling tips that share the same letter tally
   stack: Sealed evidence brackets / nesting seals
   sliding_window: Moving surveillance window along a street
   two_pointers: Two officers walking a line from opposite ends
   linked_list: Informant chain / paperclip trail
+  linked_list_reverse: Flipping an informant chain end-for-end
+  running_min: Lowest chalk price seen so far on the board
   running_minimum: Lowest chalk price seen so far on the board
+  prefix_suffix: Blind multipliers from before/after a clue
+  kadane: Strongest contiguous streak of leads on the board
 
 # Case-insensitive; matched with word boundaries where applicable.
 # Applied to pre-solve slots: hook, briefing, objective_in_world, success_line.

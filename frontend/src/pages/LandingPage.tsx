@@ -1,8 +1,25 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { fetchMe, isLoggedIn, logout } from '@/lib/api'
+import type { AuthUser } from '@/lib/types'
 
 export function LandingPage() {
+  const [user, setUser] = useState<AuthUser | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      if (!isLoggedIn()) return
+      const me = await fetchMe()
+      if (!cancelled) setUser(me)
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   return (
     <main className="relative min-h-screen overflow-hidden">
       <div
@@ -46,6 +63,31 @@ export function LandingPage() {
           <Link to="/campaign">
             <Button className="px-6 py-3 text-base">Enter Detective Academy</Button>
           </Link>
+          {user ? (
+            <Button
+              variant="secondary"
+              className="px-6 py-3 text-base"
+              onClick={() => {
+                logout()
+                setUser(null)
+              }}
+            >
+              Sign out ({user.email})
+            </Button>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="secondary" className="px-6 py-3 text-base">
+                  Sign in
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="ghost" className="px-6 py-3 text-base">
+                  Register
+                </Button>
+              </Link>
+            </>
+          )}
         </motion.div>
         <motion.p
           initial={{ opacity: 0 }}
@@ -53,7 +95,9 @@ export function LandingPage() {
           transition={{ delay: 0.7 }}
           className="mt-16 font-[family-name:var(--font-ui)] text-sm text-[var(--color-ink-muted)]"
         >
-          Guest play · no account · Chapter 1 case desk
+          {user
+            ? 'Signed in · progress saved to your account'
+            : 'Guest play is ephemeral · register to keep XP and unlocks'}
         </motion.p>
       </div>
     </main>

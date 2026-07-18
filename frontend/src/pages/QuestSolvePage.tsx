@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
-import { fetchQuest, submitCode } from '@/lib/api'
+import { fetchHints, fetchQuest, submitCode } from '@/lib/api'
 import type { Language, Quest, SubmitResponse } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -27,6 +27,9 @@ export function QuestSolvePage() {
   const [busy, setBusy] = useState(false)
   const [result, setResult] = useState<SubmitResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [hintLevel, setHintLevel] = useState(0)
+  const [hints, setHints] = useState<Array<{ level: number; text: string }>>([])
+  const [hintBusy, setHintBusy] = useState(false)
 
   useEffect(() => {
     if (!questId) return
@@ -53,6 +56,21 @@ export function QuestSolvePage() {
     setLanguage(next)
     setSource(quest.canon.languages[next]?.starter ?? '')
     setResult(null)
+  }
+
+  async function revealNextHint() {
+    if (!questId || hintLevel >= 5) return
+    const next = hintLevel + 1
+    setHintBusy(true)
+    try {
+      const res = await fetchHints(questId, next)
+      setHints(res.hints)
+      setHintLevel(next)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to load hint')
+    } finally {
+      setHintBusy(false)
+    }
   }
 
   async function run(mode: 'run' | 'submit') {
@@ -148,12 +166,32 @@ export function QuestSolvePage() {
         <Button disabled={busy} onClick={() => run('submit')}>
           Submit
         </Button>
+        <Button variant="ghost" disabled={hintBusy || hintLevel >= 5} onClick={revealNextHint}>
+          {hintLevel >= 5 ? 'All hints revealed' : `Hint L${hintLevel + 1}`}
+        </Button>
         {busy && (
           <span className="self-center font-[family-name:var(--font-ui)] text-sm text-[var(--color-ink-muted)]">
             Judging…
           </span>
         )}
       </div>
+
+      {hints.length > 0 && (
+        <section className="mt-4 rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.55)] p-4">
+          <h2 className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">
+            Hint ladder
+          </h2>
+          <ul className="mt-3 space-y-2 text-sm text-[var(--color-paper)]/90">
+            {hints.map((h) => (
+              <li key={h.level}>
+                <span className="font-[family-name:var(--font-ui)] text-[var(--color-lamp)]">L{h.level}</span>
+                {' — '}
+                {h.text}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {error && (
         <p className="mt-4 rounded-md border border-[var(--color-danger)]/40 bg-[var(--color-danger)]/10 p-3 text-sm">

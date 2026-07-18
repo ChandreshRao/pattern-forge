@@ -6,17 +6,8 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app.content_loader import first_quest_id
-from app.models import Guest, Progress
+from app.models import Progress
 from app.schemas import ProgressPayload
-
-
-def _ensure_guest(db: Session, guest_id: str) -> Guest:
-    guest = db.get(Guest, guest_id)
-    if guest is None:
-        guest = Guest(id=guest_id)
-        db.add(guest)
-        db.flush()
-    return guest
 
 
 def default_unlocked(campaign_id: str) -> list[str]:
@@ -24,13 +15,50 @@ def default_unlocked(campaign_id: str) -> list[str]:
     return [first] if first else []
 
 
-def get_or_create_progress(db: Session, guest_id: str, campaign_id: str) -> Progress:
-    _ensure_guest(db, guest_id)
-    row = db.get(Progress, {"guest_id": guest_id, "campaign_id": campaign_id})
+def ephemeral_progress(campaign_id: str) -> ProgressPayload:
+    return ProgressPayload(
+        user_id=None,
+        campaign_id=campaign_id,
+        xp=0,
+        unlocked_quest_ids=default_unlocked(campaign_id),
+        completed_quest_ids=[],
+        last_language=None,
+        ephemeral=True,
+    )
+
+
+def apply_ephemeral_completion(
+    current: ProgressPayload,
+    quest_id: str,
+    language: str,
+    xp_award: int,
+    next_id: str | None,
+) -> ProgressPayload:
+    unlocked = set(current.unlocked_quest_ids)
+    completed = set(current.completed_quest_ids)
+    first_time = quest_id not in completed
+    completed.add(quest_id)
+    unlocked.add(quest_id)
+    if next_id:
+        unlocked.add(next_id)
+    xp = int(current.xp or 0) + (xp_award if first_time else 0)
+    return ProgressPayload(
+        user_id=None,
+        campaign_id=current.campaign_id,
+        xp=xp,
+        unlocked_quest_ids=sorted(unlocked),
+        completed_quest_ids=sorted(completed),
+        last_language=language,
+        ephemeral=True,
+    )
+
+
+def get_or_create_progress(db: Session, user_id: str, campaign_id: str) -> Progress:
+    row = db.get(Progress, {"user_id": user_id, "campaign_id": campaign_id})
     if row is None:
         unlocked = default_unlocked(campaign_id)
         row = Progress(
-            guest_id=guest_id,
+            user_id=user_id,
             campaign_id=campaign_id,
             xp=0,
             unlocked_quest_ids_json=json.dumps(unlocked),
@@ -45,21 +73,21 @@ def get_or_create_progress(db: Session, guest_id: str, campaign_id: str) -> Prog
 
 def progress_to_payload(row: Progress) -> ProgressPayload:
     return ProgressPayload(
-        guest_id=row.guest_id,
+        user_id=row.user_id,
         campaign_id=row.campaign_id,
         xp=row.xp,
         unlocked_quest_ids=json.loads(row.unlocked_quest_ids_json or "[]"),
         completed_quest_ids=json.loads(row.completed_quest_ids_json or "[]"),
         last_language=row.last_language,
+        ephemeral=False,
     )
 
 
-def put_progress(db: Session, payload: ProgressPayload) -> ProgressPayload:
-    _ensure_guest(db, payload.guest_id)
-    row = db.get(Progress, {"guest_id": payload.guest_id, "campaign_id": payload.campaign_id})
+def put_progress(db: Session, user_id: str, payload: ProgressPayload) -> ProgressPayload:
+    row = db.get(Progress, {"user_id": user_id, "campaign_id": payload.campaign_id})
     if row is None:
         row = Progress(
-            guest_id=payload.guest_id,
+            user_id=user_id,
             campaign_id=payload.campaign_id,
             xp=payload.xp,
             unlocked_quest_ids_json=json.dumps(payload.unlocked_quest_ids),
@@ -80,14 +108,14 @@ def put_progress(db: Session, payload: ProgressPayload) -> ProgressPayload:
 
 def apply_quest_completion(
     db: Session,
-    guest_id: str,
+    user_id: str,
     campaign_id: str,
     quest_id: str,
     language: str,
     xp_award: int,
     next_id: str | None,
 ) -> ProgressPayload:
-    row = get_or_create_progress(db, guest_id, campaign_id)
+    row = get_or_create_progress(db, user_id, campaign_id)
     unlocked = set(json.loads(row.unlocked_quest_ids_json or "[]"))
     completed = set(json.loads(row.completed_quest_ids_json or "[]"))
 

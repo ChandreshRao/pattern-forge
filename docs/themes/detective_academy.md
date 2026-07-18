@@ -25,11 +25,15 @@ Use these when story needs a concrete image. Do not invent competing metaphors f
 | Hash map (key → value) | Case filing cabinet / tag → drawer index |
 | Hash set (seen?) | Evidence stamp log (“already logged?”) |
 | Frequency count | Letter tally on a courier slip |
+| Frequency grouping | Bundling tips that share the same letter tally |
 | Stack | Sealed evidence brackets / nesting seals |
 | Sliding window | Moving surveillance window along a street |
 | Two pointers | Two officers walking a line from opposite ends |
 | Linked list | Informant chain / paperclip trail |
+| Linked list reverse | Flipping an informant chain end-for-end |
 | Running minimum | Lowest chalk price seen so far on the board |
+| Prefix / suffix products | Blind multipliers from before/after a clue |
+| Kadane / max subarray | Strongest contiguous streak of leads |
 
 ## Banned spoiler terms (pre-solve story slots)
 

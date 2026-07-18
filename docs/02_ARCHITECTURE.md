@@ -8,8 +8,8 @@
 | Backend | FastAPI + SQLAlchemy | Same |
 | DB | SQLite | PostgreSQL |
 | Execution | Self-hosted Judge0 CE (Docker) | Pooled / remote Judge0 |
-| Auth | None (guest) in Phase 1a | Clerk or Supabase later |
-| Deploy (later) | Vercel + Railway/Render | Dockerize API + Judge0 |
+| Auth | Email + password (JWT) in Phase 1b; guests ephemeral | Clerk / Supabase later |
+| Deploy | See `DEPLOY.md` | Vercel + Railway/Render + Judge0 |
 
 ## Repository layout (target)
 
@@ -30,9 +30,9 @@ scripts/              # Validators, content tools (later)
 ## High-level flow
 
 ```
-Browser (guest_id)
-  → Frontend (story UI, Monaco)
-  → Backend API (progress, submit)
+Browser (guest session OR JWT)
+  → Frontend (story UI, Monaco, hints, thin Codex)
+  → Backend API (auth, progress, submit, hints, codex)
   → CodeExecutor port
   → Judge0 CE
 ```
@@ -63,30 +63,36 @@ Art assets (portraits, expressions, environments, icons) are **committed static 
 
 See `05_CONTENT_ENGINE.md` for schema.
 
-## Guest progress
+## Auth & progress (Phase 1b)
 
-1. On first visit, frontend creates `guest_id` (UUID) in `localStorage`.
-2. Progress: unlocked quest ids, completions, XP, last language — stored locally for 1a reliability.
-3. Optional: backend `POST /progress` keyed by `guest_id` for submissions audit (anonymous row in SQLite).
-4. Phase 2: auth links guest → user and syncs cloud progress.
+1. **Guest:** may play without an account. Progress is **ephemeral** (in-memory on the client; reload resets).
+2. **Register / login:** `POST /auth/register`, `POST /auth/login` → JWT. `GET /auth/me`.
+3. **Logged-in progress:** SQLite `user_progress` keyed by `user_id` + `campaign_id` (XP, unlocks, completions, last language).
+4. Submit with `Authorization: Bearer …` persists completions; guest submit returns ephemeral progress in the response only.
+5. Hosted Auth (Clerk/Supabase), email verify, and password reset are later.
 
-## API sketch (Phase 1a)
+## API sketch (Phase 1b)
 
 | Method | Path | Purpose |
 |---|---|---|
 | GET | `/health` | Liveness |
+| POST | `/auth/register` | Create account |
+| POST | `/auth/login` | JWT |
+| GET | `/auth/me` | Current user |
 | GET | `/campaigns/{id}` | Campaign + chapter metadata |
 | GET | `/quests/{id}` | Quest canon (public fields) + story slots |
-| POST | `/submit` | `{ guest_id, quest_id, language, source }` → judge results |
-| GET/PUT | `/progress/{guest_id}` | Optional sync |
+| GET | `/quests/{id}/hints?max_level=` | Progressive hint ladder |
+| GET | `/codex` | Thin pattern list for completed quests |
+| POST | `/submit` | Judge run/submit (+ optional guest snapshot fields) |
+| GET/PUT | `/progress` | Authenticated progress sync |
 
-Hidden tests never ship to the client in full if avoidable; prefer server-side evaluation. If MVP ships tests in content files loaded by the server only, keep them off the public quest payload.
+Hidden tests never ship to the client in full if avoidable; prefer server-side evaluation. Hints are served progressively by level.
 
-## Data model (SQLite, minimal)
+## Data model (SQLite, Phase 1b)
 
-- `guests(id, created_at)`
-- `progress(guest_id, campaign_id, xp, unlocked_quest_ids_json, updated_at)`
-- `submissions(id, guest_id, quest_id, language, passed, created_at)` — optional for 1a
+- `users(id, email, password_hash, created_at)`
+- `user_progress(user_id, campaign_id, xp, unlocked_quest_ids_json, completed_quest_ids_json, last_language, updated_at)`
+- `submissions(id, user_id?, guest_id?, quest_id, language, mode, passed, created_at)`
 
 Canon/story content is files, not necessarily DB rows, in early phases.
 

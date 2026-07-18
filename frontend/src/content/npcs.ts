@@ -85,6 +85,55 @@ export const beatCues: Record<string, StoryBeatCue> = {
     reflectionSpeaker: 'mora',
     reflectionExpression: 'pleased',
   },
+  B4: {
+    speaker: 'mora',
+    expression: 'stern',
+    environment: 'records_room',
+    reflectionSpeaker: 'quin',
+    reflectionExpression: 'thinking',
+  },
+  B5: {
+    speaker: 'quin',
+    expression: 'thinking',
+    environment: 'evidence_locker',
+    reflectionSpeaker: 'mora',
+    reflectionExpression: 'pleased',
+  },
+  B6: {
+    speaker: 'mora',
+    expression: 'concerned',
+    environment: 'records_room',
+    reflectionSpeaker: 'quin',
+    reflectionExpression: 'thinking',
+  },
+  B7: {
+    speaker: 'quin',
+    expression: 'thinking',
+    environment: 'night_desk',
+    reflectionSpeaker: 'mora',
+    reflectionExpression: 'stern',
+  },
+  B8: {
+    speaker: 'mora',
+    expression: 'stern',
+    environment: 'evidence_locker',
+    reflectionSpeaker: 'quin',
+    reflectionExpression: 'pleased',
+  },
+  B9: {
+    speaker: 'mora',
+    expression: 'stern',
+    environment: 'night_desk',
+    reflectionSpeaker: 'quin',
+    reflectionExpression: 'thinking',
+  },
+  B10: {
+    speaker: 'mora',
+    expression: 'pleased',
+    environment: 'records_room',
+    reflectionSpeaker: 'quin',
+    reflectionExpression: 'pleased',
+  },
 }
 
 const defaultCue: StoryBeatCue = {
@@ -104,6 +153,13 @@ const questBeatIds: Record<string, string> = {
   q01_two_sum: 'B1',
   q02_contains_duplicate: 'B2',
   q03_valid_anagram: 'B3',
+  q04_best_time_to_buy_and_sell_stock: 'B4',
+  q05_valid_parentheses: 'B5',
+  q06_group_anagrams: 'B6',
+  q07_product_of_array_except_self: 'B7',
+  q08_reverse_linked_list: 'B8',
+  q09_longest_substring_without_repeating: 'B9',
+  q10_maximum_subarray: 'B10',
 }
 
 export function cueForQuest(questId: string | undefined): StoryBeatCue {

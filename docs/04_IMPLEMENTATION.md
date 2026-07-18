@@ -10,7 +10,7 @@ Phased build. Do not skip ahead of the active phase without an explicit scope ch
 - [x] `content/` placeholder + authoring README
 - [x] Scaffold `frontend/`, `backend/`, `docker/` (Judge0 compose)
 
-## Phase 1a — Tomorrow demo (active MVP cut)
+## Phase 1a — Tomorrow demo (complete)
 
 ### Goal
 
@@ -37,22 +37,23 @@ Guest completes 3 quests: story → Monaco → Judge0 → reflection → unlock.
    - [x] Submit endpoint; guest progress (localStorage ± API)
 5. **Verify acceptance** in `01_PRD.md` Phase 1a
    - [x] `scripts/verify_phase1a.py` (3 Python + JS re-solve + progress)
+
 ### Explicitly deferred from 1a
 
-Auth, full Codex, AI, analytics, 10 quests, multi-theme packs, cosmetics, adaptive difficulty.
+Full Codex notebook, AI, analytics, multi-theme packs, cosmetics, adaptive difficulty, Clerk/Supabase.
 
-## Phase 1b — Core DSA campaign
+## Phase 1b — Core DSA campaign (complete)
 
-- [ ] Quests 4–10 + story bible beats B4–B10
-- [ ] 15–20 tests per quest
-- [ ] Hint ladder L1–L5 in UI
-- [ ] Thin Codex v1 (unlocked patterns list)
-- [ ] Harden progress model
-- [ ] Deploy notes (Vercel + API host + Judge0)
+- [x] Quests 4–10 + story bible beats B4–B10
+- [x] 15–20 tests per quest (16 each)
+- [x] Hint ladder L1–L5 in UI
+- [x] Thin Codex v1 (unlocked patterns list)
+- [x] Email+password auth; logged-in progress in SQLite; guest ephemeral
+- [x] Deploy notes (`docs/DEPLOY.md`)
 
-## Phase 2+ 
+## Phase 2+
 
-See `07_ROADMAP.md`. Do not start unless Phase 1b acceptance is met or scope is renegotiated.
+See `07_ROADMAP.md`. Hosted Auth (Clerk/Supabase), full Codex, AI mentor, etc.
 
 ## Task board (living)
 
@@ -65,7 +66,7 @@ See `07_ROADMAP.md`. Do not start unless Phase 1b acceptance is met or scope is 
 - [x] XP + unlock + reflection
 - [x] Three authored quests
 
-### Nice to have (after 1a)
+### Nice to have
 
 - Wizard/NPC dialogue polish
 - Sound effects
@@ -74,3 +75,7 @@ See `07_ROADMAP.md`. Do not start unless Phase 1b acceptance is met or scope is 
 ## MVP success (1a)
 
 A learner can complete three quests as a guest and unlock through the chapter with real Judge0 execution and mandatory reflection.
+
+## Phase 1b success
+
+Ten chapter-1 quests; hint ladder; thin Codex; register/login with durable progress; deploy sketch documented.

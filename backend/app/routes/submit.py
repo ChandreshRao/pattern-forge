@@ -1,21 +1,32 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.auth import get_current_user_optional
 from app.config import get_settings
 from app.content_loader import ContentError, load_quest, next_quest_id
 from app.db import get_db
 from app.executor import get_executor
 from app.executor.base import TestCase
-from app.models import Submission
-from app.progress_service import apply_quest_completion, get_or_create_progress, progress_to_payload
-from app.schemas import ReflectionPayload, SubmitRequest, SubmitResponse, TestResult
+from app.models import Submission, User
+from app.progress_service import (
+    apply_ephemeral_completion,
+    apply_quest_completion,
+    ephemeral_progress,
+    get_or_create_progress,
+    progress_to_payload,
+)
+from app.schemas import ProgressPayload, ReflectionPayload, SubmitRequest, SubmitResponse, TestResult
 from app.xp import xp_for_rank
 
 router = APIRouter()
 
 
 @router.post("/submit", response_model=SubmitResponse)
-async def submit_code(body: SubmitRequest, db: Session = Depends(get_db)):
+async def submit_code(
+    body: SubmitRequest,
+    db: Session = Depends(get_db),
+    user: User | None = Depends(get_current_user_optional),
+):
     settings = get_settings()
     try:
         quest = load_quest(body.quest_id)
@@ -48,7 +59,22 @@ async def submit_code(body: SubmitRequest, db: Session = Depends(get_db)):
         for t in selected
     ]
 
-    progress_row = get_or_create_progress(db, body.guest_id, settings.campaign_id)
+    if user is not None:
+        progress_row = get_or_create_progress(db, user.id, settings.campaign_id)
+        progress_payload = progress_to_payload(progress_row)
+    elif body.completed_quest_ids is not None or body.unlocked_quest_ids is not None or body.xp is not None:
+        base = ephemeral_progress(settings.campaign_id)
+        progress_payload = ProgressPayload(
+            user_id=None,
+            campaign_id=settings.campaign_id,
+            xp=int(body.xp if body.xp is not None else 0),
+            unlocked_quest_ids=list(body.unlocked_quest_ids or base.unlocked_quest_ids),
+            completed_quest_ids=list(body.completed_quest_ids or []),
+            last_language=None,
+            ephemeral=True,
+        )
+    else:
+        progress_payload = ephemeral_progress(settings.campaign_id)
 
     executor = get_executor()
     result = await executor.submit(body.source, body.language, function_name, tests)
@@ -68,7 +94,6 @@ async def submit_code(body: SubmitRequest, db: Session = Depends(get_db)):
     ]
 
     reflection = None
-    progress_payload = progress_to_payload(progress_row)
 
     if body.mode == "submit" and result.passed:
         completed_before = set(progress_payload.completed_quest_ids)
@@ -79,15 +104,25 @@ async def submit_code(body: SubmitRequest, db: Session = Depends(get_db)):
         story = quest.get("story") or {}
         refl = canon.get("reflection") or {}
 
-        progress_payload = apply_quest_completion(
-            db,
-            guest_id=body.guest_id,
-            campaign_id=settings.campaign_id,
-            quest_id=body.quest_id,
-            language=body.language,
-            xp_award=xp_award,
-            next_id=nxt,
-        )
+        if user is not None:
+            progress_payload = apply_quest_completion(
+                db,
+                user_id=user.id,
+                campaign_id=settings.campaign_id,
+                quest_id=body.quest_id,
+                language=body.language,
+                xp_award=xp_award,
+                next_id=nxt,
+            )
+        else:
+            progress_payload = apply_ephemeral_completion(
+                progress_payload,
+                quest_id=body.quest_id,
+                language=body.language,
+                xp_award=xp_award,
+                next_id=nxt,
+            )
+
         reflection = ReflectionPayload(
             success_line=story.get("success_line") or "Case closed.",
             pattern_reveal_name=canon.get("pattern_reveal_name") or "",
@@ -99,7 +134,8 @@ async def submit_code(body: SubmitRequest, db: Session = Depends(get_db)):
 
     db.add(
         Submission(
-            guest_id=body.guest_id,
+            user_id=user.id if user else None,
+            guest_id=body.guest_id if user is None else None,
             quest_id=body.quest_id,
             language=body.language,
             mode=body.mode,

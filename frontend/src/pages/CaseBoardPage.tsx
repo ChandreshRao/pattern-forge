@@ -1,24 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { fetchCampaign, syncProgress } from '@/lib/api'
-import type { Campaign, ProgressPayload } from '@/lib/types'
+import { fetchCampaign, fetchMe, isLoggedIn, logout, syncProgress } from '@/lib/api'
+import type { AuthUser, Campaign, ProgressPayload } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Lock, CheckCircle2, FileText } from 'lucide-react'
 
 export function CaseBoardPage() {
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [progress, setProgress] = useState<ProgressPayload | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const [c, p] = await Promise.all([fetchCampaign(), syncProgress()])
+        const [c, p, me] = await Promise.all([
+          fetchCampaign(),
+          syncProgress(),
+          isLoggedIn() ? fetchMe() : Promise.resolve(null),
+        ])
         if (!cancelled) {
           setCampaign(c)
           setProgress(p)
+          setUser(me)
         }
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load')
@@ -35,12 +41,36 @@ export function CaseBoardPage() {
 
   return (
     <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
-      <Link
-        to="/"
-        className="font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)] hover:underline"
-      >
-        ← PatternForge
-      </Link>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link
+          to="/"
+          className="font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)] hover:underline"
+        >
+          ← PatternForge
+        </Link>
+        <div className="flex flex-wrap items-center gap-3 font-[family-name:var(--font-ui)] text-sm">
+          <Link to="/codex" className="text-[var(--color-lamp)] hover:underline">
+            Pattern Codex
+          </Link>
+          {user ? (
+            <button
+              type="button"
+              className="text-[var(--color-ink-muted)] hover:text-[var(--color-paper)]"
+              onClick={() => {
+                logout()
+                setUser(null)
+                window.location.reload()
+              }}
+            >
+              Sign out
+            </button>
+          ) : (
+            <Link to="/login" className="text-[var(--color-lamp)] hover:underline">
+              Sign in to save
+            </Link>
+          )}
+        </div>
+      </div>
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,6 +83,7 @@ export function CaseBoardPage() {
       </p>
       <div className="mt-4 font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)]">
         XP: {progress?.xp ?? 0}
+        {progress?.ephemeral ? ' · guest (not saved)' : user ? ` · ${user.email}` : ''}
       </div>
 
       {error && (

@@ -4,8 +4,8 @@
 
 | Persona | Need |
 |---|---|
-| Guest learner | Play a story campaign, write code, get judged, reflect — no account |
-| Future signed-in learner | Sync progress, Codex, AI mentor (later phases) |
+| Guest learner | Play without an account (progress is ephemeral on reload) |
+| Signed-in learner | Email+password account; durable XP / unlocks / Codex |
 | Content author / agent | Author canon + story slots from Blind-75 sources without inventing curriculum |
 | Platform operator | Run Judge0 locally (MVP), deploy later |
 
@@ -53,16 +53,23 @@
 ### In scope
 
 - Expand to **10** playable quests; thicken tests toward **15–20** each.
-- Hint ladder L1–L5 in content metadata.
-- Hardened SQLite guest/progress model.
+- Hint ladder L1–L5 in content metadata **and solve UI**.
+- Email + password auth (FastAPI + SQLite + JWT). Guests may play; **only logged-in progress is durable**.
 - Thin Codex v1: list of unlocked patterns.
-- Deploy sketch: Vercel (FE) + Railway/Render (API) + hosted/self-hosted Judge0.
+- Deploy sketch: Vercel (FE) + Railway/Render (API) + hosted/self-hosted Judge0 — see `DEPLOY.md`.
 
 ### Success criteria
 
-- Guest (or later auth user) can complete all 10 chapter-1 quests with reflection and unlocks.
-- Each quest has ≥15 tests and a full static hint ladder.
+- Guest can complete quests in-session (reload may reset). Logged-in user completes quests with reflection/unlocks surviving reload.
+- Each quest has ≥15 tests and a full static hint ladder in the UI.
 - Codex v1 lists patterns discovered so far.
+- Register / login / me work without email verification (MVP).
+
+### Out of scope for 1b
+
+- Email verification, password reset, OAuth, Clerk/Supabase (later).
+- Full Pattern Codex notebook / mastery %.
+- Guest → account claim merge.
 
 ## Problem selection
 

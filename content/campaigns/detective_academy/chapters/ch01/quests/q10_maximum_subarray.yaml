@@ -1,0 +1,153 @@
+id: q10_maximum_subarray
+chapter_id: ch01
+order: 10
+beat_id: B10
+theme_id: detective_academy
+
+canon:
+  title: "Strongest Streak"
+  pattern_id: kadane
+  pattern_reveal_name: "Maximum Subarray (Kadane)"
+  recognition_signals:
+    - running_sum_reset
+    - contiguous_run
+    - best_so_far
+  difficulty_rank: investigator
+  languages:
+    python:
+      function_name: maximum_subarray
+      starter: |
+        from typing import List
+
+        def maximum_subarray(nums: List[int]) -> int:
+            pass
+    javascript:
+      function_name: maxSubArray
+      starter: |
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         */
+        function maxSubArray(nums) {
+          
+        }
+    typescript:
+      function_name: maxSubArray
+      starter: |
+        function maxSubArray(nums: number[]): number {
+          
+        }
+  constraints_text: >
+    Find the contiguous run of at least one number in nums with the largest
+    sum, and return that sum.
+  examples:
+    - input: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] }
+      output: 6
+    - input: { nums: [1] }
+      output: 1
+  tests:
+    - id: t1
+      input: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] }
+      expected: 6
+      hidden: false
+    - id: t2
+      input: { nums: [1] }
+      expected: 1
+      hidden: false
+    - id: t3
+      input: { nums: [5, 4, -1, 7, 8] }
+      expected: 23
+      hidden: true
+    - id: t4
+      input: { nums: [-1] }
+      expected: -1
+      hidden: true
+    - id: t5
+      input: { nums: [-2, -1] }
+      expected: -1
+      hidden: true
+    - id: t6
+      input: { nums: [-3, -2, -1, -4] }
+      expected: -1
+      hidden: true
+    - id: t7
+      input: { nums: [1, 2, 3, 4, 5] }
+      expected: 15
+      hidden: true
+    - id: t8
+      input: { nums: [0, 0, 0, 0] }
+      expected: 0
+      hidden: true
+    - id: t9
+      input: { nums: [-1, 0, -2] }
+      expected: 0
+      hidden: true
+    - id: t10
+      input: { nums: [8, -19, 5, -4, 20] }
+      expected: 21
+      hidden: true
+    - id: t11
+      input: { nums: [100, -1, -2, -3, 100] }
+      expected: 194
+      hidden: true
+    - id: t12
+      input: { nums: [3, -2, 5, -1] }
+      expected: 6
+      hidden: true
+    - id: t13
+      input: { nums: [-5, -1, -8, -9] }
+      expected: -1
+      hidden: true
+    - id: t14
+      input: { nums: [2, -1, 2, 3, -9, 10] }
+      expected: 10
+      hidden: true
+    - id: t15
+      input: { nums: [0] }
+      expected: 0
+      hidden: true
+    - id: t16
+      input: { nums: [-1, -2, -3, 0, -1] }
+      expected: 0
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what 'contiguous' means — no skipping around, just a connected run."
+    - level: 2
+      text: "Think about the best run ending exactly at the current position, updated as you move forward."
+    - level: 3
+      text: "If the run ending here would be worse than starting fresh at the current spot, restart the run."
+    - level: 4
+      text: "Track a running total for 'best run ending here' and separately the best total seen anywhere so far."
+    - level: 5
+      text: "Near-pseudocode: current = nums[0]; best = nums[0]; for each later value, current = max(value, current + value); best = max(best, current)."
+  reflection:
+    why: "You tracked the best run ending at each position instead of checking every possible run."
+    common_mistakes:
+      - "Resetting the running total to zero instead of to the current value when it goes negative"
+      - "Forgetting the array can be all negative, so the answer is the least-negative single value"
+      - "Confusing the best run ending here with the best run overall"
+    complexity:
+      time: "O(n)"
+      space: "O(1)"
+  interview_reference: "LeetCode 53 — Maximum Subarray"
+
+story:
+  hook: >
+    The case board is a row of pinned leads, some solid, some dead ends,
+    stretching the length of the records room wall — and the captain wants
+    the strongest connected streak, not just the biggest single pin.
+  briefing: >
+    Captain Mora traces the pins with a finger. A streak only counts if the
+    pins are side by side with nothing skipped, and a weak pin can still be
+    worth keeping if it's bridging two strong ones. Find the strongest
+    unbroken streak on the board.
+  objective_in_world: >
+    Find the largest total value of any unbroken run of adjacent pins on
+    the case board.
+  success_line: >
+    The strongest streak is circled; the case board finally tells a clean
+    story.
+  reflection_flavor: >
+    Quin steps back from the board, pleased. The night desk lamp is already
+    dimming — whatever comes next waits past the academy gate.

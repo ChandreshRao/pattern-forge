@@ -18,13 +18,18 @@ import json as _json
 _TESTS = _json.loads({tests_json!r})
 _RESULTS = []
 
+def _pf_equal(a, b):
+    if isinstance(a, list) and isinstance(b, list) and a and b and isinstance(a[0], list):
+        return sorted(tuple(sorted(g)) for g in a) == sorted(tuple(sorted(g)) for g in b)
+    return a == b
+
 for _case in _TESTS:
     _cid = _case["id"]
     _inp = _case["input"]
     _exp = _case["expected"]
     try:
         _actual = {function_name}(**_inp)
-        _ok = _actual == _exp
+        _ok = _pf_equal(_actual, _exp)
         _RESULTS.append({{
             "id": _cid,
             "passed": _ok,
@@ -54,6 +59,10 @@ const _TESTS = {tests_json};
 const _RESULTS = [];
 
 function _deepEqual(a, b) {{
+  if (Array.isArray(a) && Array.isArray(b) && a.length && b.length && Array.isArray(a[0])) {{
+    const norm = (groups) => JSON.stringify(groups.map((g) => g.slice().sort()).sort((x, y) => JSON.stringify(x).localeCompare(JSON.stringify(y))));
+    return norm(a) === norm(b);
+  }}
   return JSON.stringify(a) === JSON.stringify(b);
 }}
 
@@ -97,6 +106,10 @@ const _TESTS: any[] = {tests_json};
 const _RESULTS: any[] = [];
 
 function _deepEqual(a: any, b: any): boolean {{
+  if (Array.isArray(a) && Array.isArray(b) && a.length && b.length && Array.isArray(a[0])) {{
+    const norm = (groups: any[]) => JSON.stringify(groups.map((g: any[]) => g.slice().sort()).sort((x: any, y: any) => JSON.stringify(x).localeCompare(JSON.stringify(y))));
+    return norm(a) === norm(b);
+  }}
   return JSON.stringify(a) === JSON.stringify(b);
 }}
 

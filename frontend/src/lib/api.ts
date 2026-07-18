@@ -1,31 +1,36 @@
-import type { Campaign, ProgressPayload, Quest, SubmitResponse, Language } from './types'
+import type { Campaign, ProgressPayload, Quest, SubmitResponse, Language, AuthUser, AuthResponse, HintsResponse, CodexResponse } from './types'
 
 const API = '/api'
-const GUEST_KEY = 'pf_guest_id'
-const PROGRESS_KEY = 'pf_progress'
+const TOKEN_KEY = 'pf_token'
 const CAMPAIGN_ID = 'detective_academy'
 
-export function getOrCreateGuestId(): string {
-  let id = localStorage.getItem(GUEST_KEY)
-  if (!id) {
-    id = crypto.randomUUID()
-    localStorage.setItem(GUEST_KEY, id)
-  }
-  return id
+/** In-memory guest progress — cleared on full page reload by design. */
+let guestProgress: ProgressPayload | null = null
+
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY)
 }
 
-export function readLocalProgress(): ProgressPayload | null {
-  const raw = localStorage.getItem(PROGRESS_KEY)
-  if (!raw) return null
-  try {
-    return JSON.parse(raw) as ProgressPayload
-  } catch {
-    return null
-  }
+export function setToken(token: string | null) {
+  if (token) localStorage.setItem(TOKEN_KEY, token)
+  else localStorage.removeItem(TOKEN_KEY)
 }
 
-export function writeLocalProgress(progress: ProgressPayload) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress))
+export function isLoggedIn(): boolean {
+  return Boolean(getToken())
+}
+
+export function getGuestProgress(): ProgressPayload | null {
+  return guestProgress
+}
+
+export function setGuestProgress(progress: ProgressPayload | null) {
+  guestProgress = progress
+}
+
+function authHeaders(): Record<string, string> {
+  const token = getToken()
+  return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
@@ -33,6 +38,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
     headers: {
       'Content-Type': 'application/json',
+      ...authHeaders(),
       ...(init?.headers || {}),
     },
   })
@@ -43,6 +49,41 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
+export async function register(email: string, password: string): Promise<AuthResponse> {
+  const res = await api<AuthResponse>('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  })
+  setToken(res.access_token)
+  guestProgress = null
+  return res
+}
+
+export async function login(email: string, password: string): Promise<AuthResponse> {
+  const res = await api<AuthResponse>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  })
+  setToken(res.access_token)
+  guestProgress = null
+  return res
+}
+
+export function logout() {
+  setToken(null)
+  guestProgress = null
+}
+
+export async function fetchMe(): Promise<AuthUser | null> {
+  if (!getToken()) return null
+  try {
+    return await api<AuthUser>('/auth/me')
+  } catch {
+    setToken(null)
+    return null
+  }
+}
+
 export async function fetchCampaign(): Promise<Campaign> {
   return api<Campaign>(`/campaigns/${CAMPAIGN_ID}`)
 }
@@ -51,40 +92,37 @@ export async function fetchQuest(questId: string): Promise<Quest> {
   return api<Quest>(`/quests/${questId}`)
 }
 
-export async function fetchProgress(guestId: string): Promise<ProgressPayload> {
-  return api<ProgressPayload>(`/progress/${guestId}?campaign_id=${CAMPAIGN_ID}`)
+export async function fetchHints(questId: string, maxLevel: number): Promise<HintsResponse> {
+  return api<HintsResponse>(`/quests/${questId}/hints?max_level=${maxLevel}`)
 }
 
-export async function putProgress(progress: ProgressPayload): Promise<ProgressPayload> {
-  return api<ProgressPayload>(`/progress/${progress.guest_id}`, {
-    method: 'PUT',
-    body: JSON.stringify(progress),
-  })
+export async function fetchCodex(completedQuestIds?: string): Promise<CodexResponse> {
+  if (completedQuestIds) {
+    return api<CodexResponse>(`/codex?completed=${encodeURIComponent(completedQuestIds)}`)
+  }
+  return api<CodexResponse>('/codex')
+}
+
+function defaultGuestProgress(): ProgressPayload {
+  return {
+    user_id: null,
+    campaign_id: CAMPAIGN_ID,
+    xp: 0,
+    unlocked_quest_ids: ['q01_two_sum'],
+    completed_quest_ids: [],
+    last_language: null,
+    ephemeral: true,
+  }
 }
 
 export async function syncProgress(): Promise<ProgressPayload> {
-  const guestId = getOrCreateGuestId()
-  const local = readLocalProgress()
-  let remote = await fetchProgress(guestId)
-
-  if (local && local.guest_id === guestId) {
-    const merged: ProgressPayload = {
-      guest_id: guestId,
-      campaign_id: CAMPAIGN_ID,
-      xp: Math.max(local.xp, remote.xp),
-      unlocked_quest_ids: Array.from(
-        new Set([...local.unlocked_quest_ids, ...remote.unlocked_quest_ids]),
-      ),
-      completed_quest_ids: Array.from(
-        new Set([...local.completed_quest_ids, ...remote.completed_quest_ids]),
-      ),
-      last_language: local.last_language || remote.last_language,
-    }
-    remote = await putProgress(merged)
+  if (isLoggedIn()) {
+    return api<ProgressPayload>(`/progress?campaign_id=${CAMPAIGN_ID}`)
   }
-
-  writeLocalProgress(remote)
-  return remote
+  if (!guestProgress) {
+    guestProgress = defaultGuestProgress()
+  }
+  return guestProgress
 }
 
 export async function submitCode(params: {
@@ -93,19 +131,29 @@ export async function submitCode(params: {
   source: string
   mode: 'run' | 'submit'
 }): Promise<SubmitResponse> {
-  const guestId = getOrCreateGuestId()
+  const body: Record<string, unknown> = {
+    quest_id: params.questId,
+    language: params.language,
+    source: params.source,
+    mode: params.mode,
+  }
+  if (!isLoggedIn()) {
+    const g = guestProgress ?? defaultGuestProgress()
+    body.guest_id = crypto.randomUUID()
+    body.xp = g.xp
+    body.unlocked_quest_ids = g.unlocked_quest_ids
+    body.completed_quest_ids = g.completed_quest_ids
+  }
   const result = await api<SubmitResponse>('/submit', {
     method: 'POST',
-    body: JSON.stringify({
-      guest_id: guestId,
-      quest_id: params.questId,
-      language: params.language,
-      source: params.source,
-      mode: params.mode,
-    }),
+    body: JSON.stringify(body),
   })
   if (result.progress) {
-    writeLocalProgress(result.progress)
+    if (isLoggedIn()) {
+      // server is source of truth
+    } else {
+      guestProgress = result.progress
+    }
   }
   return result
 }

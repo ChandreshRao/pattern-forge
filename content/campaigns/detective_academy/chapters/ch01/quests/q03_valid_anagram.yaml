@@ -77,6 +77,38 @@ canon:
       input: { s: "aa", t: "a" }
       expected: false
       hidden: true
+    - id: t9
+      input: { s: "abc", t: "cab" }
+      expected: true
+      hidden: true
+    - id: t10
+      input: { s: "abcd", t: "abdc" }
+      expected: true
+      hidden: true
+    - id: t11
+      input: { s: "eleven", t: "levene" }
+      expected: true
+      hidden: true
+    - id: t12
+      input: { s: "z", t: "z" }
+      expected: true
+      hidden: true
+    - id: t13
+      input: { s: "ab", t: "abc" }
+      expected: false
+      hidden: true
+    - id: t14
+      input: { s: "night", t: "thing" }
+      expected: true
+      hidden: true
+    - id: t15
+      input: { s: "interpretation", t: "penetrationist" }
+      expected: false
+      hidden: true
+    - id: t16
+      input: { s: "aaaa", t: "aaab" }
+      expected: false
+      hidden: true
   hints:
     - level: 1
       text: "Clarify what must be identical between the two tips."

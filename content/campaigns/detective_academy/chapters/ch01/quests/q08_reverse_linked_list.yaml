@@ -1,0 +1,152 @@
+id: q08_reverse_linked_list
+chapter_id: ch01
+order: 8
+beat_id: B8
+theme_id: detective_academy
+
+canon:
+  title: "Reverse Trail"
+  pattern_id: linked_list_reverse
+  pattern_reveal_name: "Linked List Reverse"
+  recognition_signals:
+    - pointer_flip
+    - in_place_reversal
+    - order_matters
+  difficulty_rank: explorer
+  languages:
+    python:
+      function_name: reverse_list
+      starter: |
+        from typing import List
+
+        def reverse_list(values: List[int]) -> List[int]:
+            pass
+    javascript:
+      function_name: reverseList
+      starter: |
+        /**
+         * @param {number[]} values
+         * @return {number[]}
+         */
+        function reverseList(values) {
+          
+        }
+    typescript:
+      function_name: reverseList
+      starter: |
+        function reverseList(values: number[]): number[] {
+          
+        }
+  constraints_text: >
+    The values array represents a trail of informants in order, first to
+    last. Return the trail reversed, last to first. The trail may be empty.
+  examples:
+    - input: { values: [1, 2, 3, 4, 5] }
+      output: [5, 4, 3, 2, 1]
+    - input: { values: [] }
+      output: []
+  tests:
+    - id: t1
+      input: { values: [1, 2, 3, 4, 5] }
+      expected: [5, 4, 3, 2, 1]
+      hidden: false
+    - id: t2
+      input: { values: [] }
+      expected: []
+      hidden: false
+    - id: t3
+      input: { values: [1] }
+      expected: [1]
+      hidden: true
+    - id: t4
+      input: { values: [1, 2] }
+      expected: [2, 1]
+      hidden: true
+    - id: t5
+      input: { values: [7, 7, 7] }
+      expected: [7, 7, 7]
+      hidden: true
+    - id: t6
+      input: { values: [-1, -2, -3] }
+      expected: [-3, -2, -1]
+      hidden: true
+    - id: t7
+      input: { values: [0, 1, 0, 1] }
+      expected: [1, 0, 1, 0]
+      hidden: true
+    - id: t8
+      input: { values: [10, 20, 30, 40, 50, 60] }
+      expected: [60, 50, 40, 30, 20, 10]
+      hidden: true
+    - id: t9
+      input: { values: [5] }
+      expected: [5]
+      hidden: true
+    - id: t10
+      input: { values: [3, 1, 4, 1, 5, 9, 2, 6] }
+      expected: [6, 2, 9, 5, 1, 4, 1, 3]
+      hidden: true
+    - id: t11
+      input: { values: [100, -100] }
+      expected: [-100, 100]
+      hidden: true
+    - id: t12
+      input: { values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
+      expected: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+      hidden: true
+    - id: t13
+      input: { values: [2, 2] }
+      expected: [2, 2]
+      hidden: true
+    - id: t14
+      input: { values: [9, 8, 7, 6, 5] }
+      expected: [5, 6, 7, 8, 9]
+      hidden: true
+    - id: t15
+      input: { values: [42] }
+      expected: [42]
+      hidden: true
+    - id: t16
+      input: { values: [1, 3, 5, 7, 9, 11] }
+      expected: [11, 9, 7, 5, 3, 1]
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what 'reversed' means for a trail you can only walk one direction at a time."
+    - level: 2
+      text: "Think about what you need to remember about the informant behind the one you're currently visiting."
+    - level: 3
+      text: "Each step, the trail should end up pointing back at where you came from, not forward."
+    - level: 4
+      text: "Walk the trail once, flipping each link to point at the previous informant as you go."
+    - level: 5
+      text: "Near-pseudocode: keep previous = none; for each informant, remember the next one, point the current one back at previous, then advance previous and current."
+  reflection:
+    why: "You flipped each link to point backward in a single walk instead of rebuilding the trail from scratch."
+    common_mistakes:
+      - "Losing the reference to the next node before rewiring the current one"
+      - "Forgetting to update the head and tail after the flip"
+      - "Off-by-one errors that drop the first or last informant"
+    complexity:
+      time: "O(n)"
+      space: "O(1)"
+  interview_reference: "LeetCode 206 — Reverse Linked List"
+
+story:
+  hook: >
+    A paperclipped stack of informant cards sits in the evidence locker,
+    each card pointing to the next name in the chain, until someone asks
+    for the chain read backward.
+  briefing: >
+    Captain Mora needs the trail flipped end to end: the last informant
+    contacted should now lead, the first should trail last. Quin warns that
+    once you unclip a card you cannot glance ahead — you only get to look
+    at the card in your hand and the one right before it.
+  objective_in_world: >
+    Flip the informant trail so it runs in the exact opposite order, one
+    card at a time.
+  success_line: >
+    The trail runs backward clean; the chain of contacts is intact.
+  reflection_flavor: >
+    Quin re-clips the stack, satisfied. Out on the street, a moving watch
+    is due to start along a stretch that never repeats itself.

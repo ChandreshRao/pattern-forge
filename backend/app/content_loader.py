@@ -95,6 +95,54 @@ def public_quest_payload(quest: dict[str, Any]) -> dict[str, Any]:
     return data
 
 
+def hints_up_to(quest: dict[str, Any], max_level: int) -> list[dict[str, Any]]:
+    canon = quest.get("canon") or {}
+    hints = canon.get("hints") or []
+    out: list[dict[str, Any]] = []
+    for h in hints:
+        level = int(h.get("level") or 0)
+        if 1 <= level <= max_level:
+            out.append({"level": level, "text": h.get("text") or ""})
+    out.sort(key=lambda x: x["level"])
+    return out
+
+
+def all_quest_ids(campaign_id: str) -> list[str]:
+    campaign = load_campaign(campaign_id)
+    ordered: list[str] = []
+    for chapter in campaign.get("chapters", []):
+        for q in chapter.get("quests") or []:
+            ordered.append(q["id"])
+    return ordered
+
+
+def codex_entries_for_quests(quest_ids: list[str], campaign_id: str | None = None) -> list[dict[str, Any]]:
+    settings = get_settings()
+    cid = campaign_id or settings.campaign_id
+    entries: list[dict[str, Any]] = []
+    seen_patterns: set[str] = set()
+    for qid in quest_ids:
+        try:
+            quest = load_quest(qid, cid)
+        except ContentError:
+            continue
+        canon = quest.get("canon") or {}
+        pattern_id = canon.get("pattern_id") or qid
+        if pattern_id in seen_patterns:
+            continue
+        seen_patterns.add(pattern_id)
+        refl = canon.get("reflection") or {}
+        entries.append(
+            {
+                "pattern_id": pattern_id,
+                "pattern_reveal_name": canon.get("pattern_reveal_name") or pattern_id,
+                "why": refl.get("why") or "",
+                "quest_id": qid,
+            }
+        )
+    return entries
+
+
 def first_quest_id(campaign_id: str) -> str | None:
     campaign = load_campaign(campaign_id)
     for chapter in campaign.get("chapters", []):

@@ -1,0 +1,153 @@
+id: q06_group_anagrams
+chapter_id: ch01
+order: 6
+beat_id: B6
+theme_id: detective_academy
+
+canon:
+  title: "Alias Bundles"
+  pattern_id: frequency_group
+  pattern_reveal_name: "Frequency Grouping"
+  recognition_signals:
+    - same_letter_counts
+    - bucket_by_signature
+    - grouping
+  difficulty_rank: investigator
+  languages:
+    python:
+      function_name: group_anagrams
+      starter: |
+        from typing import List
+
+        def group_anagrams(strs: List[str]) -> List[List[str]]:
+            pass
+    javascript:
+      function_name: groupAnagrams
+      starter: |
+        /**
+         * @param {string[]} strs
+         * @return {string[][]}
+         */
+        function groupAnagrams(strs) {
+          
+        }
+    typescript:
+      function_name: groupAnagrams
+      starter: |
+        function groupAnagrams(strs: string[]): string[][] {
+          
+        }
+  constraints_text: >
+    Group the strings that are anagrams of each other into the same sublist.
+    Strings consist of lowercase English letters. The order of the groups
+    and the order of strings within a group do not matter.
+  examples:
+    - input: { strs: ["eat", "tea", "tan", "ate", "nat", "bat"] }
+      output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+    - input: { strs: [""] }
+      output: [[""]]
+  tests:
+    - id: t1
+      input: { strs: ["eat", "tea", "tan", "ate", "nat", "bat"] }
+      expected: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+      hidden: false
+    - id: t2
+      input: { strs: [""] }
+      expected: [[""]]
+      hidden: false
+    - id: t3
+      input: { strs: ["a"] }
+      expected: [["a"]]
+      hidden: true
+    - id: t4
+      input: { strs: ["ab", "ba", "abc"] }
+      expected: [["ab", "ba"], ["abc"]]
+      hidden: true
+    - id: t5
+      input: { strs: ["abc", "bca", "cab", "xyz", "zyx", "abc"] }
+      expected: [["abc", "bca", "cab", "abc"], ["xyz", "zyx"]]
+      hidden: true
+    - id: t6
+      input: { strs: ["listen", "silent", "enlist", "google", "gooogle"] }
+      expected: [["listen", "silent", "enlist"], ["google"], ["gooogle"]]
+      hidden: true
+    - id: t7
+      input: { strs: ["", "", ""] }
+      expected: [["", "", ""]]
+      hidden: true
+    - id: t8
+      input: { strs: ["abcd", "dcba", "badc", "xxxx"] }
+      expected: [["abcd", "dcba", "badc"], ["xxxx"]]
+      hidden: true
+    - id: t9
+      input: { strs: ["rat", "tar", "art", "car"] }
+      expected: [["rat", "tar", "art"], ["car"]]
+      hidden: true
+    - id: t10
+      input: { strs: ["a", "b", "c", "d"] }
+      expected: [["a"], ["b"], ["c"], ["d"]]
+      hidden: true
+    - id: t11
+      input: { strs: ["ab", "cd"] }
+      expected: [["ab"], ["cd"]]
+      hidden: true
+    - id: t12
+      input: { strs: ["aab", "aba", "baa", "ab"] }
+      expected: [["aab", "aba", "baa"], ["ab"]]
+      hidden: true
+    - id: t13
+      input: { strs: ["nap", "pan", "apn", "napkin"] }
+      expected: [["nap", "pan", "apn"], ["napkin"]]
+      hidden: true
+    - id: t14
+      input: { strs: ["star", "rats", "arts", "tars", "art"] }
+      expected: [["star", "rats", "arts", "tars"], ["art"]]
+      hidden: true
+    - id: t15
+      input: { strs: ["abcdefg", "gfedcba", "aabbccdd"] }
+      expected: [["abcdefg", "gfedcba"], ["aabbccdd"]]
+      hidden: true
+    - id: t16
+      input: { strs: ["z", "zz", "zzz"] }
+      expected: [["z"], ["zz"], ["zzz"]]
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what makes two tips count as the same alias bundle."
+    - level: 2
+      text: "Order of letters does not matter — something else about each tip must still match exactly."
+    - level: 3
+      text: "A signature built from a tip's letters (sorted, or counted) can label it."
+    - level: 4
+      text: "Bucket tips by that signature; only tips sharing a signature belong in the same bundle."
+    - level: 5
+      text: "Near-pseudocode: for each tip, compute a sorted-letters key; append the tip to a bucket keyed by that; return every bucket."
+  reflection:
+    why: "You bucketed each tip by a letter signature instead of comparing every pair of tips."
+    common_mistakes:
+      - "Comparing tips pairwise instead of building a shared signature"
+      - "Forgetting that different-length tips can never share a signature"
+      - "Losing duplicate tips when building or reading back the signature key"
+    complexity:
+      time: "O(n * k log k)"
+      space: "O(n * k)"
+  interview_reference: "LeetCode 49 — Group Anagrams"
+
+story:
+  hook: >
+    A stack of anonymous tips covers the records room table, each one signed
+    with a different alias, but Quin swears some of them are the same
+    message wearing a different name.
+  briefing: >
+    Captain Mora wants the pile sorted before the shift ends. Bundle every
+    tip with the others that share the exact same scrambled letters, no
+    matter what alias is signed at the bottom. Quin has already tallied a
+    few and left the rest for you.
+  objective_in_world: >
+    Sort the tips into bundles so every tip shares its bundle only with
+    tips built from the exact same letters.
+  success_line: >
+    The tip pile is bundled by alias; the records room table finally clears.
+  reflection_flavor: >
+    Quin ties off the last bundle. A blind courier drop is already waiting,
+    receipts wrapped so tight no one can see the totals inside.

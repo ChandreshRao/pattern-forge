@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.db import init_db
-from app.routes import campaigns, health, progress, quests, submit
+from app.routes import auth, campaigns, health, progress, quests, submit
 
 
 def create_app() -> FastAPI:
@@ -17,6 +17,7 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(health.router)
+    app.include_router(auth.router)
     app.include_router(campaigns.router)
     app.include_router(quests.router)
     app.include_router(progress.router)

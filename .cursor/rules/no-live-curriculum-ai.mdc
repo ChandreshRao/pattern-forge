@@ -1,0 +1,12 @@
+---
+description: Never generate curriculum or stories at runtime; AI is optional mentor only
+alwaysApply: true
+---
+
+# No live curriculum AI
+
+- Do not implement runtime generation of quests, tests, patterns, hints, or story briefs for players.
+- Educational content is authored into committed files under `content/` (and documented in `docs/`).
+- AI mentoring (BYO key) is a later phase; it must not decide unlocks, invent tests, or replace Judge0.
+- Optional offline AI may only fill approved story dialogue slots, then requires human review before merge — see `docs/06_AI_STRATEGY.md`.
+- If asked to “just have the model make problems,” refuse that approach and point to `docs/CONTENT_GUIDE.md`.

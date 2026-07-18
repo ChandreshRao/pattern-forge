@@ -4,7 +4,7 @@
 
 | Layer | Choice | Scale path |
 |---|---|---|
-| Frontend | React + Vite + TypeScript + Tailwind + shadcn/ui + Monaco | Same |
+| Frontend | React + Vite + TypeScript + Tailwind + shadcn/ui + Monaco + Framer Motion | Optional later: Lottie / PixiJS / Rive |
 | Backend | FastAPI + SQLAlchemy | Same |
 | DB | SQLite | PostgreSQL |
 | Execution | Self-hosted Judge0 CE (Docker) | Pooled / remote Judge0 |
@@ -58,6 +58,8 @@ Quests live under `content/campaigns/...` as YAML/JSON with separated keys:
 - `story` — slots filled from theme + story bible beats
 
 UI renders canon I/O and story slots; it does not hardcode problems in React components.
+
+Art assets (portraits, expressions, environments, icons) are **committed static files** served by the frontend. Never generate artwork at runtime. See `08_VISUAL_STYLE.md` and `06_AI_STRATEGY.md`.
 
 See `05_CONTENT_ENGINE.md` for schema.
 

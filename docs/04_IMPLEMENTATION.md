@@ -8,7 +8,7 @@ Phased build. Do not skip ahead of the active phase without an explicit scope ch
 - [x] Root `AGENTS.md` + Cursor rules/skills
 - [x] Remove duplicate root roadmaps (`IMPLEMENTATION.md`, `TASKS.md`, `FUTURE_ROADMAP.md`, `AGENTS (1).md`)
 - [x] `content/` placeholder + authoring README
-- [ ] Scaffold `frontend/`, `backend/`, `docker/` (Judge0 compose)
+- [x] Scaffold `frontend/`, `backend/`, `docker/` (Judge0 compose)
 
 ## Phase 1a — Tomorrow demo (active MVP cut)
 
@@ -19,24 +19,24 @@ Guest completes 3 quests: story → Monaco → Judge0 → reflection → unlock.
 ### Tasks
 
 1. **Scaffold**
-   - [ ] Vite React TS frontend + Tailwind + shadcn baseline
-   - [ ] FastAPI backend + SQLite + health route
-   - [ ] Docker Compose for Judge0 CE
+   - [x] Vite React TS frontend + Tailwind + shadcn baseline
+   - [x] FastAPI backend + SQLite + health route
+   - [x] Docker Compose for Judge0 CE
 2. **Content (3 quests)**
-   - [ ] Canon + story for Two Sum, Contains Duplicate, Valid Anagram
-   - [ ] ≥8 hidden tests each (expand to 15–20 in 1b)
-   - [ ] Detective Academy beats B1–B3 (`STORY_BIBLE.md`)
+   - [x] Canon + story for Two Sum, Contains Duplicate, Valid Anagram
+   - [x] ≥8 hidden tests each (expand to 15–20 in 1b)
+   - [x] Detective Academy beats B1–B3 (`STORY_BIBLE.md`)
 3. **Gameplay UI**
-   - [ ] Landing → campaign → quest story screen
-   - [ ] Monaco (py/js/ts) + Run/Submit
-   - [ ] Results panel
-   - [ ] Reflection screen (XP + pattern reveal + next unlock)
+   - [x] Landing → campaign → quest story screen
+   - [x] Monaco (py/js/ts) + Run/Submit
+   - [x] Results panel
+   - [x] Reflection screen (XP + pattern reveal + next unlock)
 4. **Backend**
-   - [ ] Load quest content server-side
-   - [ ] `CodeExecutor` + Judge0 implementation
-   - [ ] Submit endpoint; guest progress (localStorage ± API)
+   - [x] Load quest content server-side
+   - [x] `CodeExecutor` + Judge0 implementation
+   - [x] Submit endpoint; guest progress (localStorage ± API)
 5. **Verify acceptance** in `01_PRD.md` Phase 1a
-
+   - [x] `scripts/verify_phase1a.py` (3 Python + JS re-solve + progress)
 ### Explicitly deferred from 1a
 
 Auth, full Codex, AI, analytics, 10 quests, multi-theme packs, cosmetics, adaptive difficulty.
@@ -58,12 +58,12 @@ See `07_ROADMAP.md`. Do not start unless Phase 1b acceptance is met or scope is 
 
 ### High priority (1a)
 
-- Initialize frontend / backend
-- Judge0 Docker + adapter
-- Campaign + quest pages
-- Monaco + submit flow
-- XP + unlock + reflection
-- Three authored quests
+- [x] Initialize frontend / backend
+- [x] Judge0 Docker + adapter
+- [x] Campaign + quest pages
+- [x] Monaco + submit flow
+- [x] XP + unlock + reflection
+- [x] Three authored quests
 
 ### Nice to have (after 1a)
 

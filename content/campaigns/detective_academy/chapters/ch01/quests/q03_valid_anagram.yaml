@@ -1,0 +1,116 @@
+id: q03_valid_anagram
+chapter_id: ch01
+order: 3
+beat_id: B3
+theme_id: detective_academy
+refer_problem: refer_problems/strings/valid_anagram.py
+
+canon:
+  title: "Scrambled Tip"
+  pattern_id: frequency_count
+  pattern_reveal_name: "Frequency Counting"
+  recognition_signals:
+    - same_letters
+    - rearrange
+    - counts
+  difficulty_rank: explorer
+  languages:
+    python:
+      function_name: valid_anagram
+      starter: |
+        def valid_anagram(s: str, t: str) -> bool:
+            pass
+    javascript:
+      function_name: validAnagram
+      starter: |
+        /**
+         * @param {string} s
+         * @param {string} t
+         * @return {boolean}
+         */
+        function validAnagram(s, t) {
+          
+        }
+    typescript:
+      function_name: validAnagram
+      starter: |
+        function validAnagram(s: string, t: string): boolean {
+          
+        }
+  constraints_text: >
+    Return true if t is an anagram of s (same characters with the same frequencies).
+    Strings consist of lowercase English letters.
+  examples:
+    - input: { s: "anagram", t: "nagaram" }
+      output: true
+    - input: { s: "rat", t: "car" }
+      output: false
+  tests:
+    - id: t1
+      input: { s: "anagram", t: "nagaram" }
+      expected: true
+      hidden: false
+    - id: t2
+      input: { s: "rat", t: "car" }
+      expected: false
+      hidden: false
+    - id: t3
+      input: { s: "hello", t: "world" }
+      expected: false
+      hidden: true
+    - id: t4
+      input: { s: "a", t: "a" }
+      expected: true
+      hidden: true
+    - id: t5
+      input: { s: "a", t: "b" }
+      expected: false
+      hidden: true
+    - id: t6
+      input: { s: "aabbcc", t: "abcabc" }
+      expected: true
+      hidden: true
+    - id: t7
+      input: { s: "listen", t: "silent" }
+      expected: true
+      hidden: true
+    - id: t8
+      input: { s: "aa", t: "a" }
+      expected: false
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what must be identical between the two tips."
+    - level: 2
+      text: "Order can change; something else must stay the same."
+    - level: 3
+      text: "Counting how often each symbol appears helps."
+    - level: 4
+      text: "Compare frequency maps of both strings."
+    - level: 5
+      text: "Near-pseudocode: if lengths differ false; else compare character counts."
+  reflection:
+    why: "You proved equivalence by counting symbols instead of trying every rearrangement."
+    common_mistakes:
+      - "Sorting both strings then forgetting length checks"
+      - "Comparing only unique characters without frequencies"
+    complexity:
+      time: "O(n)"
+      space: "O(1)"
+  interview_reference: "LeetCode 242 — Valid Anagram"
+
+story:
+  hook: >
+    In the records room, two courier slips sit under Quin's lamp — same ink smell,
+    letters scrambled like a coded habit.
+  briefing: >
+    Captain Mora needs confirmation before dawn. Are these two tips the same message
+    with letters rearranged, or a forged pair? Quin mentions a letter tally on a
+    courier slip can settle it without reading every permutation aloud.
+  objective_in_world: >
+    Confirm whether the two tips use the same letters with the same counts.
+  success_line: >
+    The courier habit is confirmed; the coded tips match.
+  reflection_flavor: >
+    Mora pins the case board. Forged duplicates and scrambled tips were only the desk work —
+    field cases wait beyond the academy door.

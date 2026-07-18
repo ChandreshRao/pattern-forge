@@ -42,6 +42,15 @@ Educators publish campaigns → review → moderation → distribution.
 
 Multiple themes over the same curriculum; downloadable story packs.
 
+Candidate future themes (same DSA canon, new theme pack + story slots):
+
+- **Keepers of Patterns** — documented draft in `themes/keepers_of_patterns.md` (not yet authored)
+- Lost Kingdom
+- Cyber Detective
+- Space Expedition
+- Underwater Civilization
+- Steampunk
+
 ## Phase 9 — Additional curricula
 
 SQL, system design, design patterns, networking, AI engineering, etc. Engine unchanged; new content packs.

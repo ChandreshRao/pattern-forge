@@ -157,7 +157,20 @@ Add seven more from Blind-75, still coherent with Chapter 1 case arc (see `STORY
 
 ## Pattern metadata (global registry — later file)
 
-`content/patterns/{pattern_id}.yaml` — description, recognition clues, variations, related patterns. Phase 1a may inline reveal name + why on reflection only.
+`content/patterns/{pattern_id}.yaml` — Codex page source. Phase 1a may inline reveal name + why on reflection only; full Codex UI is later.
+
+Each pattern page should support:
+
+| Field | Purpose |
+|---|---|
+| Pattern name / id | Official reveal name |
+| Recognition clues | How to spot the pattern on a new problem |
+| Complexity | Time / space teaching points |
+| Variations | Related twists of the same idea |
+| Common mistakes | From canon reflection |
+| Mastery % | Derived from player progress (runtime, not authored) |
+| Related patterns / quests | Cross-links |
+| Interview reference | Classic problem link (post-solve only) |
 
 ## Theme packs
 

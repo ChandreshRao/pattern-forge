@@ -58,3 +58,11 @@ Phase 1a/1b: **human or agent-authored committed YAML** — no AI fill step requ
 Pre-solve surfaces (story, objective, editor chrome): no pattern names, no “use a hash map”, no complexity targets beyond what canon exposes as constraints.
 
 Post-solve (reflection, Codex): pattern reveal and teaching points from **canon**, not free-form model invention.
+
+## Art and NPC asset policy
+
+Generate portraits, expression sheets, environments, relics, and icons **once offline**. Commit them permanently. Never regenerate artwork or biographies at runtime.
+
+Use dialogue templates with placeholders (e.g. `{player_name}`, `{vault_name}`) instead of free-form generation during play. Optional AI may only fill approved story dialogue slots offline, then requires human review before merge.
+
+Pipeline and motion guidance: `08_VISUAL_STYLE.md`.

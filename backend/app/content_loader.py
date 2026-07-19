@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -8,9 +9,18 @@ import yaml
 
 from app.config import get_settings
 
+# Alphanumeric, underscore, hyphen only — blocks path separators, "..", and glob metacharacters.
+_SAFE_ID = re.compile(r"^[A-Za-z0-9_-]+$")
+
 
 class ContentError(Exception):
     pass
+
+
+def _validate_content_id(value: str, kind: str) -> str:
+    if not value or not _SAFE_ID.fullmatch(value):
+        raise ContentError(f"Invalid {kind}: {value!r}")
+    return value
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -24,6 +34,7 @@ def _load_yaml(path: Path) -> dict[str, Any]:
 
 
 def campaign_dir(campaign_id: str) -> Path:
+    _validate_content_id(campaign_id, "campaign_id")
     return get_settings().content_root / "campaigns" / campaign_id
 
 
@@ -64,6 +75,7 @@ def load_campaign(campaign_id: str) -> dict[str, Any]:
 
 def load_quest(quest_id: str, campaign_id: str | None = None) -> dict[str, Any]:
     settings = get_settings()
+    _validate_content_id(quest_id, "quest_id")
     cid = campaign_id or settings.campaign_id
     root = campaign_dir(cid)
     matches = list(root.glob(f"chapters/*/quests/{quest_id}.yaml"))

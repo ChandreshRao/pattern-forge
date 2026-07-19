@@ -38,10 +38,17 @@ def create_app() -> FastAPI:
             @app.get("/{full_path:path}")
             async def spa_fallback(full_path: str) -> FileResponse:
                 # API is already registered above; this catches client-side routes.
-                candidate = static_dir / full_path
-                if full_path and candidate.is_file():
-                    return FileResponse(candidate)
-                return FileResponse(static_dir / "index.html")
+                root = static_dir.resolve()
+                index = root / "index.html"
+                if full_path:
+                    candidate = (static_dir / full_path).resolve()
+                    try:
+                        candidate.relative_to(root)
+                    except ValueError:
+                        return FileResponse(index)
+                    if candidate.is_file():
+                        return FileResponse(candidate)
+                return FileResponse(index)
 
     @app.on_event("startup")
     def _startup() -> None:

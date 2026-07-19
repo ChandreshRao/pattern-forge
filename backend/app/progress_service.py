@@ -5,9 +5,10 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from app.content_loader import first_quest_id
+from app.content_loader import ContentError, all_quest_ids, first_quest_id, load_quest, next_quest_id
 from app.models import Progress
 from app.schemas import ProgressPayload
+from app.xp import xp_for_rank
 
 
 def default_unlocked(campaign_id: str) -> list[str]:
@@ -50,6 +51,52 @@ def apply_ephemeral_completion(
         completed_quest_ids=sorted(completed),
         last_language=language,
         ephemeral=True,
+    )
+
+
+def recompute_progress_from_completions(
+    campaign_id: str,
+    claimed_completed: list[str],
+    *,
+    user_id: str | None = None,
+    last_language: str | None = None,
+    ephemeral: bool = False,
+) -> ProgressPayload:
+    """Validate claimed completions against campaign canon; derive unlocks and XP server-side."""
+    ordered = all_quest_ids(campaign_id)
+    valid = set(ordered)
+    unknown = sorted({qid for qid in claimed_completed if qid not in valid})
+    if unknown:
+        raise ContentError(f"Unknown quest ids: {', '.join(unknown)}")
+
+    claimed = set(claimed_completed)
+    # Sequential campaign: only a contiguous prefix of completions is accepted.
+    completed: list[str] = []
+    for qid in ordered:
+        if qid in claimed:
+            completed.append(qid)
+        else:
+            break
+
+    unlocked = set(default_unlocked(campaign_id))
+    xp = 0
+    for qid in completed:
+        unlocked.add(qid)
+        nxt = next_quest_id(qid, campaign_id)
+        if nxt:
+            unlocked.add(nxt)
+        quest = load_quest(qid, campaign_id)
+        rank = (quest.get("canon") or {}).get("difficulty_rank") or "explorer"
+        xp += xp_for_rank(rank)
+
+    return ProgressPayload(
+        user_id=user_id,
+        campaign_id=campaign_id,
+        xp=xp,
+        unlocked_quest_ids=sorted(unlocked),
+        completed_quest_ids=sorted(completed),
+        last_language=last_language,
+        ephemeral=ephemeral,
     )
 
 

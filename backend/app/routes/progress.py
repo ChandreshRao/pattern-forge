@@ -1,12 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
 from app.auth import get_current_user
 from app.config import get_settings
+from app.content_loader import ContentError
 from app.db import get_db
 from app.models import User
-from app.progress_service import get_or_create_progress, progress_to_payload, put_progress
+from app.progress_service import (
+    get_or_create_progress,
+    progress_to_payload,
+    put_progress,
+    recompute_progress_from_completions,
+)
 from app.schemas import ProgressPayload
-from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -32,7 +38,15 @@ def upsert_my_progress(
     if body.user_id and body.user_id != user.id:
         raise HTTPException(status_code=400, detail="user_id mismatch")
     settings = get_settings()
-    payload = body.model_copy(
-        update={"user_id": user.id, "campaign_id": body.campaign_id or settings.campaign_id, "ephemeral": False}
-    )
+    cid = body.campaign_id or settings.campaign_id
+    try:
+        payload = recompute_progress_from_completions(
+            cid,
+            body.completed_quest_ids,
+            user_id=user.id,
+            last_language=body.last_language,
+            ephemeral=False,
+        )
+    except ContentError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     return put_progress(db, user.id, payload)

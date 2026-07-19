@@ -97,7 +97,9 @@ export async function fetchHints(questId: string, maxLevel: number): Promise<Hin
 }
 
 export async function fetchCodex(completedQuestIds?: string): Promise<CodexResponse> {
-  if (completedQuestIds) {
+  // Explicit empty string means "no completions" (guest with empty progress).
+  // Omitting the arg keeps authenticated/unfiltered server behavior.
+  if (completedQuestIds !== undefined) {
     return api<CodexResponse>(`/codex?completed=${encodeURIComponent(completedQuestIds)}`)
   }
   return api<CodexResponse>('/codex')

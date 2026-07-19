@@ -1,6 +1,6 @@
 # Visual style guide
 
-**Status:** Theme-agnostic product art and UI motion direction. Theme packs own palette, lexicon, and screen naming (e.g. Detective Academy in `themes/detective_academy.md`, Keepers of Patterns in `themes/keepers_of_patterns.md`).
+**Status:** Theme-agnostic product art and UI motion direction. Theme packs own palette, lexicon, and screen naming (e.g. Detective Academy in `themes/detective_academy.md`).
 
 ## Guiding principle
 
@@ -22,8 +22,6 @@ Focus: discovery, mystery, story, coding, pattern recognition.
 
 **The application is the game.** Surfaces should feel like places in the world, not admin chrome.
 
-Theme packs map labels (examples):
-
 | Neutral surface | Example theme labels |
 |---|---|
 | Dashboard | Expedition Map / Case Board |
@@ -39,34 +37,23 @@ Use **2D illustrated bust portraits**.
 
 - Waist-up portraits
 - Painterly / storybook style
-- Palette and costume follow the active theme (earthy explorer vs night-desk detective, etc.)
+- Palette and costume follow the active theme
 
 ## Animation
 
 Do **not** use GIFs.
 
-Prefer:
+Prefer: WebP / PNG stills, Framer Motion, CSS transitions, Lottie (optional).
 
-- WebP / PNG stills
-- Framer Motion
-- CSS transitions
-- Lottie (optional)
-
-Effect vocabulary:
-
-- Fade in
-- Blink
-- Gentle breathing
-- Floating
-- Dialogue typing
+Effect vocabulary: fade in, blink, gentle breathing, floating, dialogue typing.
 
 ## Environments
 
-Reuse a **small** set per theme (examples: village, library, temple, forest, cave, ruins, observatory — or academy desks, records room, locker). Prefer variation through lighting and props over many unique backgrounds.
+Reuse a **small** set per theme. Prefer variation through lighting and props over many unique backgrounds.
 
 ## NPC and asset pipeline
 
-Keep a memorable recurring cast per theme. Generate once and reuse forever.
+Generate once and reuse forever.
 
 1. Character profile (personality, role, relationships)
 2. Portrait (2–4 candidates; pick one)
@@ -74,11 +61,11 @@ Keep a memorable recurring cast per theme. Generate once and reuse forever.
 4. Dialogue templates with placeholders
 5. Commit assets to Git under the theme’s asset path
 
-**Runtime:** React loads static committed assets. No AI during gameplay. See `06_AI_STRATEGY.md`.
+**Runtime:** React loads static committed assets. No AI during gameplay. See [CONTENT.md](CONTENT.md) (AI boundaries).
 
 ## Recommended frontend motion stack
 
 - React, Tailwind, Framer Motion, shadcn/ui (core)
 - Optional later: Lottie, PixiJS, Rive
 
-Stack choices for engineering also appear in `02_ARCHITECTURE.md`.
+Stack choices: [ARCHITECTURE.md](ARCHITECTURE.md).

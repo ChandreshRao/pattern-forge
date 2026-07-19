@@ -1,6 +1,6 @@
 ---
 description: Rules for authoring quest canon and Detective Academy story slots without inventing curriculum
-globs: content/**,docs/STORY_BIBLE.md,docs/themes/**,docs/CONTENT_GUIDE.md,docs/05_CONTENT_ENGINE.md
+globs: content/**,docs/STORY_BIBLE.md,docs/themes/**,docs/CONTENT.md
 alwaysApply: false
 ---
 

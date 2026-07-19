@@ -77,7 +77,7 @@ Do not introduce major new named characters in Chapter 1 without updating this b
 | B9 | Unique stretch | Longest stretch of nights without repeating signal | Sliding window (reveal after) |
 | B10 | Strongest streak | Strongest contiguous streak of leads | Kadane / subarray |
 
-Exact `refer_problems` binding for B4–B10 is chosen at authoring time per `CONTENT_GUIDE.md` / `05_CONTENT_ENGINE.md`.
+Exact `refer_problems` binding for B4–B10 is chosen at authoring time per [CONTENT.md](CONTENT.md).
 
 ## Story slot templates
 
@@ -91,4 +91,4 @@ reflection_flavor: 1–2 sentences atmosphere; do NOT teach complexity here
 
 ## Publishing rule
 
-Stories are **committed** under `content/`. No runtime generation on the player path. Optional AI slot-fill is offline + reviewed (`06_AI_STRATEGY.md`).
+Stories are **committed** under `content/`. No runtime generation on the player path. Optional AI slot-fill is offline + reviewed ([CONTENT.md](CONTENT.md) — AI boundaries).

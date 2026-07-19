@@ -16,12 +16,12 @@ Adding/editing files under `content/`, expanding Chapter 1, or rewriting Detecti
 ### 1. Pick source
 
 - Choose a file under `refer_problems/`.
-- Phase 1a locked: `two_sum`, `contains_duplicate`, `valid_anagram` (see `docs/01_PRD.md`).
+- Chapter 1 first three: `two_sum`, `contains_duplicate`, `valid_anagram` (see `docs/CONTENT.md`).
 - Note `refer_problem` path on the quest.
 
 ### 2. Write canon first
 
-In the quest YAML `canon` key (schema: `docs/05_CONTENT_ENGINE.md`):
+In the quest YAML `canon` key (schema: `docs/CONTENT.md`):
 
 - `pattern_id`, `pattern_reveal_name`, `recognition_signals`
 - Starters for `python`, `javascript`, `typescript`
@@ -59,11 +59,9 @@ Do not invent story here if that skill is available — keep this skill focused 
 
 ## References
 
-- `docs/CONTENT_GUIDE.md`
-- `docs/05_CONTENT_ENGINE.md`
+- `docs/CONTENT.md`
 - `docs/STORY_BIBLE.md`
 - `docs/themes/detective_academy.md`
 - `content/themes/detective_academy.yaml`
-- `docs/06_AI_STRATEGY.md`
 - `.cursor/skills/write-quest-story/SKILL.md`
 - `scripts/validate_story.py`

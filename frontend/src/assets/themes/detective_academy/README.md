@@ -1,7 +1,7 @@
 # Detective Academy art assets
 
 Committed static portraits and environments. Never generate artwork at runtime
-(see `docs/08_VISUAL_STYLE.md` and `docs/06_AI_STRATEGY.md`).
+(see `docs/VISUAL_STYLE.md` and `docs/CONTENT.md` — AI boundaries).
 
 ## Drop-in generated art
 

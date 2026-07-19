@@ -152,7 +152,6 @@ python scripts/validate_story.py path/to/quest.yaml
 - `docs/STORY_BIBLE.md`
 - `docs/themes/detective_academy.md`
 - `content/themes/detective_academy.yaml`
-- `docs/CONTENT_GUIDE.md`
-- `docs/06_AI_STRATEGY.md`
+- `docs/CONTENT.md`
 - `scripts/validate_story.py`
 - `.cursor/skills/author-quest/SKILL.md` (canon first)

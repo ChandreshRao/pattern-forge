@@ -69,6 +69,13 @@ Guests: progress is ephemeral. Register/login: progress persists in SQLite.
 
 ### Verify
 
+Two layers (neither generates curriculum — they exercise committed `content/`):
+
+| Layer | Covers | Needs |
+|---|---|---|
+| `scripts/verify_phase1a.py` | API: health, auth, submit/run via Judge0, progress | Judge0 + API |
+| Root `e2e/` Playwright | Browser: Case Board, Monaco, reflection, hints, Codex, auth | Judge0 + API + frontend |
+
 ```bash
 # Judge0 + API running
 py scripts/verify_phase1a.py
@@ -80,7 +87,17 @@ npx playwright install chromium
 npm test
 ```
 
-Details: [docs/TESTING.md](docs/TESTING.md).
+Useful e2e scripts: `npm test` (headless), `npm run test:ui`, `npm run install:browsers`. Playwright starts Vite on `:5173` when nothing is listening (`reuseExistingServer` outside CI). Submit waits can be ~120s — keep Judge0 warm.
+
+| Spec | Asserts |
+|---|---|
+| `guest-loop.spec.ts` | Landing → story → Monaco → reflection → unlock; JS path |
+| `auth-progress.spec.ts` | Register, durable progress, guest reset, restore on login |
+| `hints.spec.ts` | Hint ladder L1–L5 |
+| `codex.spec.ts` | Empty Codex then Hash Map after q01 |
+| `locks.spec.ts` | Fresh guest: only q01 open |
+
+Representative quests only in the UI; the API script is the bulk submit check. Post-deploy smoke: health → register → submit `q01_two_sum` → reload progress (see Publish section above).
 
 ---
 
@@ -172,14 +189,14 @@ JUDGE0_RAPIDAPI_KEY=
 
 3. Use Postgres or SQLite on a persistent volume for `DATABASE_URL`.
 
-No code change — same `Judge0Executor` and `/api` routes. See [docs/DEPLOY.md](docs/DEPLOY.md).
+No code change — same `Judge0Executor` and `/api` routes. Architecture notes: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
 ## Content
 
-Quest YAML: `content/campaigns/detective_academy/`. Authoring: [docs/CONTENT_GUIDE.md](docs/CONTENT_GUIDE.md).
+Quest YAML: `content/campaigns/detective_academy/`. Authoring: [docs/CONTENT.md](docs/CONTENT.md).
 
 ## Docs
 
-Start at [docs/01_PRD.md](docs/01_PRD.md) → [docs/04_IMPLEMENTATION.md](docs/04_IMPLEMENTATION.md) → [docs/DEPLOY.md](docs/DEPLOY.md).
+Start at [docs/PRODUCT.md](docs/PRODUCT.md) → [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) → [docs/CONTENT.md](docs/CONTENT.md).

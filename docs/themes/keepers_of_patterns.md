@@ -8,7 +8,7 @@ When this theme is authored, create the machine-oriented twin under `content/the
 
 - **Theme id:** `keepers_of_patterns`
 - **World:** Explorer-archaeology; rediscovering vaults left by an advanced civilization
-- **Visual identity:** Warm earthy palette, ancient explorer aesthetic, painterly storybook busts (see `08_VISUAL_STYLE.md`)
+- **Visual identity:** Warm earthy palette, ancient explorer aesthetic, painterly storybook busts (see `VISUAL_STYLE.md`)
 - **Voice:** Mentoring, curious, lightly mythic — never campy
 
 ## Core premise
@@ -58,7 +58,7 @@ Theme packs own screen naming. For this theme:
 
 ## Spoiler compliance
 
-Region names that embed algorithm labels (e.g. "Vault of Hash Maps", "Forest of Two Pointers") **violate** the pre-solve spoiler rules used across themes (see `detective_academy.md` banned terms and `CONTENT_GUIDE.md`).
+Region names that embed algorithm labels (e.g. "Vault of Hash Maps", "Forest of Two Pointers") **violate** the pre-solve spoiler rules used across themes (see `detective_academy.md` banned terms and `CONTENT.md`).
 
 Before authoring:
 
@@ -72,4 +72,4 @@ To be authored when the theme ships. Do not invent competing metaphors for the s
 
 ## Publishing rule
 
-Stories and theme packs are **committed** under `content/`. No runtime generation on the player path. Optional AI slot-fill is offline + reviewed (`06_AI_STRATEGY.md`).
+Stories and theme packs are **committed** under `content/`. No runtime generation on the player path. Optional AI slot-fill is offline + reviewed (`CONTENT.md` — AI boundaries).

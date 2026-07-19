@@ -21,8 +21,6 @@ content/
 
 ## Authoring
 
-Follow `docs/CONTENT_GUIDE.md`, `docs/05_CONTENT_ENGINE.md`, and `docs/STORY_BIBLE.md`.  
+Follow `docs/CONTENT.md` and `docs/STORY_BIBLE.md`.  
 Use `.cursor/skills/author-quest/SKILL.md` for canon; `.cursor/skills/write-quest-story/SKILL.md` for story slots.  
 Validate story with `python scripts/validate_story.py <quest.yaml>`.
-
-Quest YAML is authored in Phase 1a implementation; this folder is the destination for that work.

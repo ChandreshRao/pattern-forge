@@ -1,0 +1,151 @@
+id: q05_valid_parentheses
+chapter_id: ch01
+order: 5
+beat_id: B5
+theme_id: detective_academy
+
+canon:
+  title: "The Sealed Note"
+  pattern_id: stack
+  pattern_reveal_name: "Stack"
+  recognition_signals:
+    - matching_pairs
+    - nested_order
+    - last_in_first_out
+  difficulty_rank: explorer
+  languages:
+    python:
+      function_name: valid_parentheses
+      starter: |
+        def valid_parentheses(s: str) -> bool:
+            pass
+    javascript:
+      function_name: isValid
+      starter: |
+        /**
+         * @param {string} s
+         * @return {boolean}
+         */
+        function isValid(s) {
+          
+        }
+    typescript:
+      function_name: isValid
+      starter: |
+        function isValid(s: string): boolean {
+          
+        }
+  constraints_text: >
+    The string contains only the characters ()[]{}. Return true if every
+    opening bracket has a matching closing bracket of the same type, closed
+    in the correct nested order.
+  examples:
+    - input: { s: "()[]{}" }
+      output: true
+    - input: { s: "(]" }
+      output: false
+  tests:
+    - id: t1
+      input: { s: "()[]{}" }
+      expected: true
+      hidden: false
+    - id: t2
+      input: { s: "(]" }
+      expected: false
+      hidden: false
+    - id: t3
+      input: { s: "" }
+      expected: true
+      hidden: true
+    - id: t4
+      input: { s: "(" }
+      expected: false
+      hidden: true
+    - id: t5
+      input: { s: ")" }
+      expected: false
+      hidden: true
+    - id: t6
+      input: { s: "([{}])" }
+      expected: true
+      hidden: true
+    - id: t7
+      input: { s: "([)]" }
+      expected: false
+      hidden: true
+    - id: t8
+      input: { s: "{[]}" }
+      expected: true
+      hidden: true
+    - id: t9
+      input: { s: "((()))" }
+      expected: true
+      hidden: true
+    - id: t10
+      input: { s: "(()" }
+      expected: false
+      hidden: true
+    - id: t11
+      input: { s: "]" }
+      expected: false
+      hidden: true
+    - id: t12
+      input: { s: "()()()" }
+      expected: true
+      hidden: true
+    - id: t13
+      input: { s: "{[()()]}" }
+      expected: true
+      hidden: true
+    - id: t14
+      input: { s: "(((" }
+      expected: false
+      hidden: true
+    - id: t15
+      input: { s: ")))" }
+      expected: false
+      hidden: true
+    - id: t16
+      input: { s: "{[(])}" }
+      expected: false
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what 'matching' and 'in the right order' mean for nested seals."
+    - level: 2
+      text: "Think about what you need to remember about the most recent unmatched opener."
+    - level: 3
+      text: "A structure that only reveals the most recently added item helps."
+    - level: 4
+      text: "When you see a closer, it must match the most recently seen unmatched opener."
+    - level: 5
+      text: "Near-pseudocode: push openers onto a list; on a closer, pop and check it matches; the string is valid only if nothing is left unmatched at the end."
+  reflection:
+    why: "You tracked only the most recent unmatched opener instead of scanning the whole string for a match."
+    common_mistakes:
+      - "Matching a closer against any earlier opener instead of the most recent one"
+      - "Forgetting to check that nothing is left unmatched at the end"
+      - "Treating different bracket types as interchangeable"
+    complexity:
+      time: "O(n)"
+      space: "O(n)"
+  interview_reference: "LeetCode 20 — Valid Parentheses"
+
+story:
+  hook: >
+    A sealed note comes back from the courier with a row of wax seals pressed
+    into the fold, some opened, some still shut, in an order nobody has
+    checked.
+  briefing: >
+    Archivist Quin lays the note flat under the lamp. Every seal that was
+    broken must match a seal of the same shape, closed in the right order, or
+    the whole packet is void. Captain Mora wants a clean yes or no before the
+    courier leaves.
+  objective_in_world: >
+    Decide whether every seal on the note closes in the correct nested order
+    with no seal left dangling.
+  success_line: >
+    The seal order checks out; the courier is cleared to leave.
+  reflection_flavor: >
+    Mora files the cleared note. Down the hall, a pile of scrambled tip
+    bundles is waiting to be sorted by hand.

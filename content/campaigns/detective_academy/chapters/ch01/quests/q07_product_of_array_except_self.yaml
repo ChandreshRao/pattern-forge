@@ -1,0 +1,153 @@
+id: q07_product_of_array_except_self
+chapter_id: ch01
+order: 7
+beat_id: B7
+theme_id: detective_academy
+
+canon:
+  title: "Blind Multipliers"
+  pattern_id: prefix_suffix
+  pattern_reveal_name: "Prefix / Suffix Products"
+  recognition_signals:
+    - running_product_from_left
+    - running_product_from_right
+    - no_division
+  difficulty_rank: investigator
+  languages:
+    python:
+      function_name: product_of_array_except_self
+      starter: |
+        from typing import List
+
+        def product_of_array_except_self(nums: List[int]) -> List[int]:
+            pass
+    javascript:
+      function_name: productExceptSelf
+      starter: |
+        /**
+         * @param {number[]} nums
+         * @return {number[]}
+         */
+        function productExceptSelf(nums) {
+          
+        }
+    typescript:
+      function_name: productExceptSelf
+      starter: |
+        function productExceptSelf(nums: number[]): number[] {
+          
+        }
+  constraints_text: >
+    Return an array where each position holds the product of every value in
+    nums except the value at that position. Do not use division. The array
+    has at least two entries.
+  examples:
+    - input: { nums: [1, 2, 3, 4] }
+      output: [24, 12, 8, 6]
+    - input: { nums: [-1, 1, 0, -3, 3] }
+      output: [0, 0, 9, 0, 0]
+  tests:
+    - id: t1
+      input: { nums: [1, 2, 3, 4] }
+      expected: [24, 12, 8, 6]
+      hidden: false
+    - id: t2
+      input: { nums: [-1, 1, 0, -3, 3] }
+      expected: [0, 0, 9, 0, 0]
+      hidden: false
+    - id: t3
+      input: { nums: [2, 3] }
+      expected: [3, 2]
+      hidden: true
+    - id: t4
+      input: { nums: [1, 1] }
+      expected: [1, 1]
+      hidden: true
+    - id: t5
+      input: { nums: [0, 0] }
+      expected: [0, 0]
+      hidden: true
+    - id: t6
+      input: { nums: [5, 0] }
+      expected: [0, 5]
+      hidden: true
+    - id: t7
+      input: { nums: [-2, -3, -4] }
+      expected: [12, 8, 6]
+      hidden: true
+    - id: t8
+      input: { nums: [1, 2, 3, 4, 5] }
+      expected: [120, 60, 40, 30, 24]
+      hidden: true
+    - id: t9
+      input: { nums: [4, 3, 2, 1, 2] }
+      expected: [12, 16, 24, 48, 24]
+      hidden: true
+    - id: t10
+      input: { nums: [0, 4, 0] }
+      expected: [0, 0, 0]
+      hidden: true
+    - id: t11
+      input: { nums: [-1, -1, -1, -1] }
+      expected: [-1, -1, -1, -1]
+      hidden: true
+    - id: t12
+      input: { nums: [10, 3, 5, 6, 2] }
+      expected: [180, 600, 360, 300, 900]
+      hidden: true
+    - id: t13
+      input: { nums: [1, 0] }
+      expected: [0, 1]
+      hidden: true
+    - id: t14
+      input: { nums: [2, 2, 2, 2] }
+      expected: [8, 8, 8, 8]
+      hidden: true
+    - id: t15
+      input: { nums: [-5, 7] }
+      expected: [7, -5]
+      hidden: true
+    - id: t16
+      input: { nums: [3, 1, 2, 4, 3] }
+      expected: [24, 72, 36, 18, 24]
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what each output slot needs: everything multiplied together except that slot's own value."
+    - level: 2
+      text: "Think about what you can build by walking left to right, then again right to left."
+    - level: 3
+      text: "A running product from the left side and a running product from the right side can meet in the middle."
+    - level: 4
+      text: "Combine the left-running product and the right-running product for each position, without ever dividing by that position's own value."
+    - level: 5
+      text: "Near-pseudocode: build prefix products left-to-right; build suffix products right-to-left; multiply prefix[i-1] by suffix[i+1] for each position i."
+  reflection:
+    why: "You combined a running product from each side instead of dividing the current value back out."
+    common_mistakes:
+      - "Using division and breaking on a zero value"
+      - "Only computing the product from one direction"
+      - "Off-by-one errors when combining the left and right running products"
+    complexity:
+      time: "O(n)"
+      space: "O(n)"
+  interview_reference: "LeetCode 238 — Product of Array Except Self"
+
+story:
+  hook: >
+    A courier drop lands on the night desk: five sealed receipts stacked in
+    a row, each hiding its own total, but the drop note wants every
+    receipt's missing total guessed from the others.
+  briefing: >
+    Archivist Quin spreads the receipts left to right. For each receipt,
+    work out what all the other receipts multiply to, without peeking at
+    that one receipt's own number and without simply dividing it back out.
+    Captain Mora warns that a stray zero receipt can wreck a careless guess.
+  objective_in_world: >
+    For every receipt, work out the combined total of every other receipt
+    in the row, leaving that one receipt's own value untouched.
+  success_line: >
+    Every receipt's blind total checks out; the drop is logged clean.
+  reflection_flavor: >
+    Mora squares the stack. Somewhere in evidence, a paperclip trail of
+    informants still needs to be walked backward.

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Evidence locker">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#121820"/>
+      <stop offset="100%" stop-color="#1c2838"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#room)"/>
+  <rect x="60" y="60" width="200" height="320" fill="#2a3548" stroke="#4a5568"/>
+  <rect x="280" y="60" width="200" height="320" fill="#2a3548" stroke="#4a5568"/>
+  <rect x="500" y="60" width="200" height="320" fill="#2a3548" stroke="#4a5568"/>
+  <g fill="#0f1724">
+    <rect x="75" y="80" width="170" height="28"/><rect x="75" y="120" width="170" height="28"/>
+    <rect x="75" y="160" width="170" height="28"/><rect x="75" y="200" width="170" height="28"/>
+    <rect x="295" y="80" width="170" height="28"/><rect x="295" y="120" width="170" height="28"/>
+    <rect x="295" y="160" width="170" height="28"/><rect x="295" y="200" width="170" height="28"/>
+    <rect x="515" y="80" width="170" height="28"/><rect x="515" y="120" width="170" height="28"/>
+  </g>
+  <rect x="0" y="380" width="960" height="160" fill="#0f1724"/>
+  <rect x="720" y="340" width="140" height="40" fill="#6b5344"/>
+  <circle cx="790" cy="320" r="14" fill="#c9a227" opacity="0.5"/>
+  <text x="480" y="500" text-anchor="middle" fill="#4a5568" font-family="sans-serif" font-size="14" letter-spacing="3">EVIDENCE LOCKER</text>
+</svg>

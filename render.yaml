@@ -1,0 +1,37 @@
+# PatternForge — Render Blueprint
+# https://render.com/docs/blueprint-spec
+#
+# After first deploy, set CORS_ORIGINS to your public URL, e.g.
+# ["https://patternforge.onrender.com"]
+
+databases:
+  - name: patternforge-db
+    plan: free
+
+services:
+  - type: web
+    name: patternforge
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: patternforge-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JUDGE0_BASE_URL
+        value: https://judge0-ce.p.rapidapi.com
+      - key: JUDGE0_RAPIDAPI_KEY
+        sync: false
+      - key: JUDGE0_RAPIDAPI_HOST
+        value: judge0-ce.p.rapidapi.com
+      - key: CONTENT_ROOT
+        value: /app/content
+      - key: STATIC_ROOT
+        value: /app/static
+      - key: CORS_ORIGINS
+        sync: false

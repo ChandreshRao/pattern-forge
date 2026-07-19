@@ -1,0 +1,146 @@
+id: q02_contains_duplicate
+chapter_id: ch01
+order: 2
+beat_id: B2
+theme_id: detective_academy
+
+canon:
+  title: "Double Tags"
+  pattern_id: hash_set
+  pattern_reveal_name: "Hash Set"
+  recognition_signals:
+    - seen_before
+    - uniqueness
+    - membership
+  difficulty_rank: explorer
+  languages:
+    python:
+      function_name: contains_duplicate
+      starter: |
+        from typing import List
+
+        def contains_duplicate(nums: List[int]) -> bool:
+            pass
+    javascript:
+      function_name: containsDuplicate
+      starter: |
+        /**
+         * @param {number[]} nums
+         * @return {boolean}
+         */
+        function containsDuplicate(nums) {
+          
+        }
+    typescript:
+      function_name: containsDuplicate
+      starter: |
+        function containsDuplicate(nums: number[]): boolean {
+          
+        }
+  constraints_text: >
+    Return true if any value appears at least twice; otherwise return false.
+  examples:
+    - input: { nums: [1, 2, 3, 1] }
+      output: true
+    - input: { nums: [1, 2, 3, 4] }
+      output: false
+  tests:
+    - id: t1
+      input: { nums: [1, 2, 3, 1] }
+      expected: true
+      hidden: false
+    - id: t2
+      input: { nums: [1, 2, 3, 4] }
+      expected: false
+      hidden: false
+    - id: t3
+      input: { nums: [1, 1, 1, 3, 3, 4, 3, 2, 4, 2] }
+      expected: true
+      hidden: true
+    - id: t4
+      input: { nums: [1] }
+      expected: false
+      hidden: true
+    - id: t5
+      input: { nums: [5, 5] }
+      expected: true
+      hidden: true
+    - id: t6
+      input: { nums: [-1, -2, -3, -1] }
+      expected: true
+      hidden: true
+    - id: t7
+      input: { nums: [-3, -2, -1, 0] }
+      expected: false
+      hidden: true
+    - id: t8
+      input: { nums: [1, 2, 3, 4, 5, 1] }
+      expected: true
+      hidden: true
+    - id: t9
+      input: { nums: [7, 8, 9, 10, 11, 12] }
+      expected: false
+      hidden: true
+    - id: t10
+      input: { nums: [2, 2] }
+      expected: true
+      hidden: true
+    - id: t11
+      input: { nums: [-100, 100, 0] }
+      expected: false
+      hidden: true
+    - id: t12
+      input: { nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 9] }
+      expected: true
+      hidden: true
+    - id: t13
+      input: { nums: [0] }
+      expected: false
+      hidden: true
+    - id: t14
+      input: { nums: [4, 3, 2, 1, 5, 6, 7, 3] }
+      expected: true
+      hidden: true
+    - id: t15
+      input: { nums: [9, 8, 7, 6, 5, 4, 3, 2, 1] }
+      expected: false
+      hidden: true
+    - id: t16
+      input: { nums: [1000000, -1000000, 1000000] }
+      expected: true
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what it means for a value to appear twice."
+    - level: 2
+      text: "Think about remembering values you have already scanned."
+    - level: 3
+      text: "A structure that answers 'have I seen this?' helps."
+    - level: 4
+      text: "As you scan, check membership before inserting."
+    - level: 5
+      text: "Near-pseudocode: walk once; if value in seen return true; else add it."
+  reflection:
+    why: "You remembered what was already logged instead of comparing every pair."
+    common_mistakes:
+      - "Sorting then forgetting adjacent-only checks still miss non-adjacent duplicates if done wrong"
+      - "Returning true only for consecutive duplicates"
+    complexity:
+      time: "O(n)"
+      space: "O(n)"
+  interview_reference: "LeetCode 217 — Contains Duplicate"
+
+story:
+  hook: >
+    The evidence locker intake is jammed. Stamp cards spill across the counter —
+    Mora wants to know if any tag number was logged twice.
+  briefing: >
+    Captain Mora points at the drawer. If any tag appears twice, the chain of
+    custody is compromised. Archivist Quin mutters that a stamp log should answer
+    whether a number was already logged without re-reading every card.
+  objective_in_world: >
+    Decide whether any evidence tag number appears more than once.
+  success_line: >
+    Duplicate stamps are flagged; custody holds for the night.
+  reflection_flavor: >
+    Quin finds two witness slips that should be rearrangements of the same tip.

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Records room">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2830"/>
+      <stop offset="100%" stop-color="#152028"/>
+    </linearGradient>
+    <radialGradient id="dust" cx="50%" cy="40%" r="35%">
+      <stop offset="0%" stop-color="#e8dcc8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#e8dcc8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#room)"/>
+  <rect width="960" height="540" fill="url(#dust)"/>
+  <rect x="40" y="40" width="140" height="360" fill="#3d4a40"/>
+  <rect x="200" y="40" width="140" height="360" fill="#4a5a50"/>
+  <rect x="360" y="40" width="140" height="360" fill="#3d4a40"/>
+  <rect x="620" y="40" width="140" height="360" fill="#4a5a50"/>
+  <rect x="780" y="40" width="140" height="360" fill="#3d4a40"/>
+  <g fill="#e8dcc8" opacity="0.15">
+    <rect x="55" y="60" width="110" height="12"/><rect x="55" y="90" width="110" height="12"/>
+    <rect x="215" y="70" width="110" height="12"/><rect x="215" y="100" width="110" height="12"/>
+    <rect x="375" y="55" width="110" height="12"/><rect x="635" y="80" width="110" height="12"/>
+  </g>
+  <rect x="0" y="400" width="960" height="140" fill="#121a18"/>
+  <rect x="480" y="360" width="100" height="50" fill="#6b5344" opacity="0.6"/>
+  <text x="480" y="510" text-anchor="middle" fill="#5a6a60" font-family="sans-serif" font-size="14" letter-spacing="3">RECORDS ROOM</text>
+</svg>

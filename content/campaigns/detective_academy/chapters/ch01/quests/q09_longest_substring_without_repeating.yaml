@@ -1,0 +1,150 @@
+id: q09_longest_substring_without_repeating
+chapter_id: ch01
+order: 9
+beat_id: B9
+theme_id: detective_academy
+
+canon:
+  title: "Unique Stretch"
+  pattern_id: sliding_window
+  pattern_reveal_name: "Sliding Window"
+  recognition_signals:
+    - window_expand_contract
+    - duplicate_triggers_shrink
+    - longest_run
+  difficulty_rank: investigator
+  languages:
+    python:
+      function_name: longest_substring_without_repeating
+      starter: |
+        def longest_substring_without_repeating(s: str) -> int:
+            pass
+    javascript:
+      function_name: lengthOfLongestSubstring
+      starter: |
+        /**
+         * @param {string} s
+         * @return {number}
+         */
+        function lengthOfLongestSubstring(s) {
+          
+        }
+    typescript:
+      function_name: lengthOfLongestSubstring
+      starter: |
+        function lengthOfLongestSubstring(s: string): number {
+          
+        }
+  constraints_text: >
+    Return the length of the longest contiguous substring of s that
+    contains no repeating characters. s may be empty.
+  examples:
+    - input: { s: "abcabcbb" }
+      output: 3
+    - input: { s: "bbbbb" }
+      output: 1
+  tests:
+    - id: t1
+      input: { s: "abcabcbb" }
+      expected: 3
+      hidden: false
+    - id: t2
+      input: { s: "bbbbb" }
+      expected: 1
+      hidden: false
+    - id: t3
+      input: { s: "pwwkew" }
+      expected: 3
+      hidden: true
+    - id: t4
+      input: { s: "" }
+      expected: 0
+      hidden: true
+    - id: t5
+      input: { s: "a" }
+      expected: 1
+      hidden: true
+    - id: t6
+      input: { s: "au" }
+      expected: 2
+      hidden: true
+    - id: t7
+      input: { s: "dvdf" }
+      expected: 3
+      hidden: true
+    - id: t8
+      input: { s: "abba" }
+      expected: 2
+      hidden: true
+    - id: t9
+      input: { s: "tmmzuxt" }
+      expected: 5
+      hidden: true
+    - id: t10
+      input: { s: "abcdefg" }
+      expected: 7
+      hidden: true
+    - id: t11
+      input: { s: "aab" }
+      expected: 2
+      hidden: true
+    - id: t12
+      input: { s: "cdd" }
+      expected: 2
+      hidden: true
+    - id: t13
+      input: { s: "abcabcabc" }
+      expected: 3
+      hidden: true
+    - id: t14
+      input: { s: " " }
+      expected: 1
+      hidden: true
+    - id: t15
+      input: { s: "ohvhjdml" }
+      expected: 6
+      hidden: true
+    - id: t16
+      input: { s: "aabaab!bb" }
+      expected: 3
+      hidden: true
+  hints:
+    - level: 1
+      text: "Clarify what 'no repeating characters' means inside one contiguous stretch."
+    - level: 2
+      text: "Think of a stretch you're watching that can grow or shrink as you walk it."
+    - level: 3
+      text: "When a character you've already seen shows up again inside your current stretch, the stretch's start has to jump forward."
+    - level: 4
+      text: "Track the last position you saw each character; shrink the window's start past any earlier duplicate."
+    - level: 5
+      text: "Near-pseudocode: walk the right edge forward one character at a time; if it's already in the current window, move the left edge past its last occurrence; track the longest window length seen."
+  reflection:
+    why: "You grew and shrank a moving stretch of the string instead of checking every possible substring."
+    common_mistakes:
+      - "Shrinking the window by only one step instead of jumping past the duplicate's last position"
+      - "Forgetting to update the longest length after every step, not just after a shrink"
+      - "Not handling an empty string"
+    complexity:
+      time: "O(n)"
+      space: "O(min(n, alphabet size))"
+  interview_reference: "LeetCode 3 — Longest Substring Without Repeating Characters"
+
+story:
+  hook: >
+    Captain Mora spreads a night's worth of signal logs across the night
+    desk — one symbol per minute, and she wants the longest stretch where
+    nothing repeats.
+  briefing: >
+    Mora taps the log. Walk the stretch minute by minute; the moment a
+    signal repeats inside your current watch, the watch has to start over
+    from just past the last time you saw it. Report only the longest clean
+    stretch you find.
+  objective_in_world: >
+    Find the length of the longest run of minutes in the log where no
+    signal repeats.
+  success_line: >
+    The longest clean stretch is logged; the night's watch report is done.
+  reflection_flavor: >
+    Quin marks the report and glances at the case board, where a run of
+    strong nights and weak nights is waiting to be measured.

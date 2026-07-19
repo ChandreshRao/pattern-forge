@@ -32,7 +32,7 @@ export function CodexPage() {
   }, [])
 
   return (
-    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
+    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12" data-testid="codex-page">
       <Link to="/campaign" className="font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)] hover:underline">
         ← Case Board
       </Link>
@@ -48,14 +48,18 @@ export function CodexPage() {
         </p>
       )}
       {patterns.length === 0 && !error ? (
-        <p className="mt-10 font-[family-name:var(--font-ui)] text-sm text-[var(--color-ink-muted)]">
+        <p
+          className="mt-10 font-[family-name:var(--font-ui)] text-sm text-[var(--color-ink-muted)]"
+          data-testid="codex-empty"
+        >
           No patterns yet — close a case to reveal one.
         </p>
       ) : (
-        <ul className="mt-10 space-y-4">
+        <ul className="mt-10 space-y-4" data-testid="codex-list">
           {patterns.map((p) => (
             <li
               key={p.pattern_id}
+              data-testid={`codex-pattern-${p.pattern_id}`}
               className="rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.65)] px-4 py-4"
             >
               <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">

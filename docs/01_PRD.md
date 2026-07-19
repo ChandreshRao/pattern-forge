@@ -56,7 +56,7 @@
 - Hint ladder L1–L5 in content metadata **and solve UI**.
 - Email + password auth (FastAPI + SQLite + JWT). Guests may play; **only logged-in progress is durable**.
 - Thin Codex v1: list of unlocked patterns.
-- Deploy sketch: Vercel (FE) + Railway/Render (API) + hosted/self-hosted Judge0 — see `DEPLOY.md`.
+- Deploy: Render (FE+API Docker) + Postgres + RapidAPI Judge0 — see `DEPLOY.md`. One-VM self-hosted Judge0 later.
 
 ### Success criteria
 

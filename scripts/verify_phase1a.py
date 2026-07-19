@@ -7,7 +7,7 @@ import uuid
 import urllib.error
 import urllib.request
 
-BASE = os.environ.get("PF_API_BASE", "http://127.0.0.1:8000")
+BASE = os.environ.get("PF_API_BASE", "http://127.0.0.1:8000/api")
 
 GUEST = str(uuid.uuid4())
 EMAIL = f"verify_{uuid.uuid4().hex[:8]}@example.com"

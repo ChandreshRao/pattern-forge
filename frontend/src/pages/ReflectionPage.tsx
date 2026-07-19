@@ -30,7 +30,7 @@ export function ReflectionPage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
+    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12" data-testid="reflection-page">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -59,7 +59,10 @@ export function ReflectionPage() {
               <p className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">
                 Pattern discovered
               </p>
-              <p className="mt-2 font-[family-name:var(--font-display)] text-3xl text-[var(--color-lamp-glow)] sm:text-4xl">
+              <p
+                className="mt-2 font-[family-name:var(--font-display)] text-3xl text-[var(--color-lamp-glow)] sm:text-4xl"
+                data-testid="reflection-pattern"
+              >
                 {reflection.pattern_reveal_name}
               </p>
               <p className="mt-4 leading-relaxed text-[var(--color-paper)]/90">{reflection.why}</p>
@@ -72,6 +75,7 @@ export function ReflectionPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.45 }}
           className="mt-8 font-[family-name:var(--font-ui)] text-lg text-[var(--color-lamp)]"
+          data-testid="reflection-xp"
         >
           +{reflection.xp_awarded} XP
           {state.progress ? ` · Total ${state.progress.xp}` : ''}

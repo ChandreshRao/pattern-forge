@@ -40,7 +40,7 @@ export function CaseBoardPage() {
   const completed = new Set(progress?.completed_quest_ids ?? [])
 
   return (
-    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
+    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12" data-testid="case-board">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           to="/"
@@ -49,12 +49,13 @@ export function CaseBoardPage() {
           ← PatternForge
         </Link>
         <div className="flex flex-wrap items-center gap-3 font-[family-name:var(--font-ui)] text-sm">
-          <Link to="/codex" className="text-[var(--color-lamp)] hover:underline">
+          <Link to="/codex" className="text-[var(--color-lamp)] hover:underline" data-testid="nav-codex">
             Pattern Codex
           </Link>
           {user ? (
             <button
               type="button"
+              data-testid="sign-out"
               className="text-[var(--color-ink-muted)] hover:text-[var(--color-paper)]"
               onClick={() => {
                 logout()
@@ -81,7 +82,10 @@ export function CaseBoardPage() {
       <p className="mt-3 max-w-2xl text-[var(--color-paper)]/80">
         {campaign?.description || 'Detective Academy — Chapter 1'}
       </p>
-      <div className="mt-4 font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)]">
+      <div
+        className="mt-4 font-[family-name:var(--font-ui)] text-sm text-[var(--color-lamp)]"
+        data-testid="case-board-xp"
+      >
         XP: {progress?.xp ?? 0}
         {progress?.ephemeral ? ' · guest (not saved)' : user ? ` · ${user.email}` : ''}
       </div>
@@ -100,9 +104,12 @@ export function CaseBoardPage() {
           {(chapter?.quests ?? []).map((q, i) => {
             const isUnlocked = unlocked.has(q.id) || i === 0
             const isDone = completed.has(q.id)
+            const state = isDone ? 'completed' : isUnlocked ? 'unlocked' : 'locked'
             return (
               <motion.li
                 key={q.id}
+                data-testid={`quest-card-${q.id}`}
+                data-state={state}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.08 }}
@@ -126,11 +133,14 @@ export function CaseBoardPage() {
                   </div>
                 </div>
                 {isUnlocked ? (
-                  <Link to={`/quest/${q.id}`}>
+                  <Link to={`/quest/${q.id}`} data-testid={`quest-open-${q.id}`}>
                     <Button variant="secondary">{isDone ? 'Revisit' : 'Open case'}</Button>
                   </Link>
                 ) : (
-                  <span className="font-[family-name:var(--font-ui)] text-xs text-[var(--color-ink-muted)]">
+                  <span
+                    className="font-[family-name:var(--font-ui)] text-xs text-[var(--color-ink-muted)]"
+                    data-testid={`quest-locked-${q.id}`}
+                  >
                     Locked
                   </span>
                 )}

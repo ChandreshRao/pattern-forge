@@ -50,6 +50,7 @@ Full Codex notebook, AI, analytics, multi-theme packs, cosmetics, adaptive diffi
 - [x] Thin Codex v1 (unlocked patterns list)
 - [x] Email+password auth; logged-in progress in SQLite; guest ephemeral
 - [x] Deploy notes (`docs/DEPLOY.md`)
+- [x] Browser e2e (root `e2e/` Playwright) + `docs/TESTING.md` — see verify section there
 
 ## Phase 2+
 
@@ -78,4 +79,14 @@ A learner can complete three quests as a guest and unlock through the chapter wi
 
 ## Phase 1b success
 
-Ten chapter-1 quests; hint ladder; thin Codex; register/login with durable progress; deploy sketch documented.
+Ten chapter-1 quests; hint ladder; thin Codex; register/login with durable progress; deploy path documented.
+
+**Verify:** API script `scripts/verify_phase1a.py`; browser UI `e2e/` (Playwright). Map and run steps in `docs/TESTING.md`.
+
+## Phase 1c — Public deploy (Render + RapidAPI)
+
+- [x] API under `/api`; production SPA served by FastAPI
+- [x] RapidAPI headers on `Judge0Executor` when `JUDGE0_RAPIDAPI_KEY` is set
+- [x] Root `Dockerfile` + `render.yaml` + Postgres driver
+- [x] README + `docs/DEPLOY.md` publish steps
+- [ ] One-VM compose with bundled Judge0 (deferred until a privileged VM is available)

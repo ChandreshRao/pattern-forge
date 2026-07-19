@@ -14,6 +14,10 @@ Guest + 3 quests + Judge0 + reflection + unlock. See `01_PRD.md`.
 
 10 quests, thicker tests, hint ladder UI, thin Codex v1, email+password auth (guest ephemeral), deploy sketch.
 
+## Phase 1c — Public deploy
+
+Render Docker (FE+API) + Postgres + RapidAPI Judge0; env-switchable to self-hosted Judge0 later.
+
 ## Phase 2 — Hosted auth & sync (optional upgrade)
 
 Clerk or Supabase Auth; password reset / OAuth; merge guest session into account if desired; cloud DB.

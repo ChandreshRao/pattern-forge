@@ -109,7 +109,7 @@ export function QuestSolvePage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-5xl px-4 py-8 sm:px-6">
+    <main className="mx-auto min-h-screen max-w-5xl px-4 py-8 sm:px-6" data-testid="quest-solve">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <Link
@@ -123,11 +123,12 @@ export function QuestSolvePage() {
           </h1>
           <p className="mt-1 text-sm text-[var(--color-paper)]/75">{quest.story.objective_in_world}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" data-testid="language-tabs">
           {(Object.keys(LANG_LABEL) as Language[]).map((lang) => (
             <button
               key={lang}
               type="button"
+              data-testid={`lang-${lang}`}
               onClick={() => onLanguageChange(lang)}
               className={cn(
                 'rounded-md px-3 py-1.5 font-[family-name:var(--font-ui)] text-xs',
@@ -142,13 +143,26 @@ export function QuestSolvePage() {
         </div>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-md border border-[rgba(232,220,200,0.12)]">
+      <div
+        className="mt-4 overflow-hidden rounded-md border border-[rgba(232,220,200,0.12)]"
+        data-testid="monaco-editor"
+      >
         <Editor
           height="420px"
           theme="vs-dark"
           language={MONACO_LANG[language]}
           value={source}
           onChange={(v) => setSource(v ?? '')}
+          onMount={(editor) => {
+            const w = window as Window & {
+              __pfSetEditorSource?: (v: string) => void
+              __pfGetEditorSource?: () => string
+            }
+            w.__pfSetEditorSource = (v: string) => {
+              editor.setValue(v)
+            }
+            w.__pfGetEditorSource = () => editor.getValue()
+          }}
           options={{
             fontFamily: 'IBM Plex Mono, Consolas, monospace',
             fontSize: 14,
@@ -160,13 +174,18 @@ export function QuestSolvePage() {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
-        <Button variant="secondary" disabled={busy} onClick={() => run('run')}>
+        <Button variant="secondary" disabled={busy} data-testid="run-code" onClick={() => run('run')}>
           Run
         </Button>
-        <Button disabled={busy} onClick={() => run('submit')}>
+        <Button disabled={busy} data-testid="submit-code" onClick={() => run('submit')}>
           Submit
         </Button>
-        <Button variant="ghost" disabled={hintBusy || hintLevel >= 5} onClick={revealNextHint}>
+        <Button
+          variant="ghost"
+          disabled={hintBusy || hintLevel >= 5}
+          data-testid="hint-next"
+          onClick={revealNextHint}
+        >
           {hintLevel >= 5 ? 'All hints revealed' : `Hint L${hintLevel + 1}`}
         </Button>
         {busy && (
@@ -177,13 +196,16 @@ export function QuestSolvePage() {
       </div>
 
       {hints.length > 0 && (
-        <section className="mt-4 rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.55)] p-4">
+        <section
+          className="mt-4 rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.55)] p-4"
+          data-testid="hint-ladder"
+        >
           <h2 className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-cork)]">
             Hint ladder
           </h2>
           <ul className="mt-3 space-y-2 text-sm text-[var(--color-paper)]/90">
             {hints.map((h) => (
-              <li key={h.level}>
+              <li key={h.level} data-testid={`hint-l${h.level}`}>
                 <span className="font-[family-name:var(--font-ui)] text-[var(--color-lamp)]">L{h.level}</span>
                 {' — '}
                 {h.text}
@@ -200,8 +222,14 @@ export function QuestSolvePage() {
       )}
 
       {result && (
-        <section className="mt-6 rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.7)] p-4">
-          <h2 className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-lamp)]">
+        <section
+          className="mt-6 rounded-md border border-[rgba(232,220,200,0.12)] bg-[rgba(28,40,56,0.7)] p-4"
+          data-testid="run-results"
+        >
+          <h2
+            className="font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.25em] text-[var(--color-lamp)]"
+            data-testid="run-results-heading"
+          >
             Results · {result.passed ? 'All passed' : `${result.failed} failed`}
           </h2>
           <ul className="mt-3 space-y-2 font-[family-name:var(--font-mono)] text-sm">

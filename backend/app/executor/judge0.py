@@ -6,7 +6,7 @@ from typing import Any
 
 import httpx
 
-from app.config import get_settings
+from app.config import Settings, get_settings
 from app.executor.base import CaseResult, CodeExecutor, ExecutionResult, TestCase
 from app.executor.harness import build_harness
 
@@ -20,7 +20,19 @@ LANGUAGE_IDS: dict[str, int] = {
 
 class Judge0Executor(CodeExecutor):
     def __init__(self, base_url: str | None = None) -> None:
-        self.base_url = (base_url or get_settings().judge0_base_url).rstrip("/")
+        settings = get_settings()
+        self.base_url = (base_url or settings.judge0_base_url).rstrip("/")
+        self._headers = self._build_headers(settings)
+
+    @staticmethod
+    def _build_headers(settings: Settings) -> dict[str, str]:
+        key = (settings.judge0_rapidapi_key or "").strip()
+        if not key:
+            return {}
+        return {
+            "X-RapidAPI-Key": key,
+            "X-RapidAPI-Host": settings.judge0_rapidapi_host,
+        }
 
     async def submit(
         self,
@@ -149,7 +161,7 @@ class Judge0Executor(CodeExecutor):
             "language_id": language_id,
             "stdin": "",
         }
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=120.0, headers=self._headers) as client:
             # Prefer async create + poll; wait=true can hang on TypeScript compiles.
             resp = await client.post(
                 f"{self.base_url}/submissions",

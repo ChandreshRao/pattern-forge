@@ -26,7 +26,7 @@ Start here: `docs/01_PRD.md` → `docs/04_IMPLEMENTATION.md` → `docs/03_AGENTS
 - Monaco + Python / JS / TS
 - Self-hosted Judge0 CE via backend adapter
 - Reflection + XP + unlock; hint ladder L1–L5; thin Codex v1
-- Deploy sketch in `docs/DEPLOY.md`
+- Deploy: Render (Docker FE+API) + Postgres + RapidAPI Judge0 — see `docs/DEPLOY.md`
 
 ## Tech stack
 

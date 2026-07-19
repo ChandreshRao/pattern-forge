@@ -6,10 +6,10 @@
 |---|---|---|
 | Frontend | React + Vite + TypeScript + Tailwind + shadcn/ui + Monaco + Framer Motion | Optional later: Lottie / PixiJS / Rive |
 | Backend | FastAPI + SQLAlchemy | Same |
-| DB | SQLite | PostgreSQL |
-| Execution | Self-hosted Judge0 CE (Docker) | Pooled / remote Judge0 |
+| DB | SQLite (local) / PostgreSQL (Render) | Same |
+| Execution | Judge0 CE (`Judge0Executor`) | Self-hosted Docker **or** RapidAPI |
 | Auth | Email + password (JWT) in Phase 1b; guests ephemeral | Clerk / Supabase later |
-| Deploy | See `DEPLOY.md` | Vercel + Railway/Render + Judge0 |
+| Deploy | See `DEPLOY.md` | Render (FE+API Docker) + Postgres + RapidAPI Judge0 |
 
 ## Repository layout (target)
 
@@ -66,25 +66,27 @@ See `05_CONTENT_ENGINE.md` for schema.
 ## Auth & progress (Phase 1b)
 
 1. **Guest:** may play without an account. Progress is **ephemeral** (in-memory on the client; reload resets).
-2. **Register / login:** `POST /auth/register`, `POST /auth/login` → JWT. `GET /auth/me`.
-3. **Logged-in progress:** SQLite `user_progress` keyed by `user_id` + `campaign_id` (XP, unlocks, completions, last language).
+2. **Register / login:** `POST /api/auth/register`, `POST /api/auth/login` → JWT. `GET /api/auth/me`.
+3. **Logged-in progress:** SQLite/Postgres `user_progress` keyed by `user_id` + `campaign_id` (XP, unlocks, completions, last language).
 4. Submit with `Authorization: Bearer …` persists completions; guest submit returns ephemeral progress in the response only.
 5. Hosted Auth (Clerk/Supabase), email verify, and password reset are later.
 
 ## API sketch (Phase 1b)
 
+All routes are under the `/api` prefix (Vite proxies `/api` locally; production serves SPA + `/api` from one process).
+
 | Method | Path | Purpose |
 |---|---|---|
-| GET | `/health` | Liveness |
-| POST | `/auth/register` | Create account |
-| POST | `/auth/login` | JWT |
-| GET | `/auth/me` | Current user |
-| GET | `/campaigns/{id}` | Campaign + chapter metadata |
-| GET | `/quests/{id}` | Quest canon (public fields) + story slots |
-| GET | `/quests/{id}/hints?max_level=` | Progressive hint ladder |
-| GET | `/codex` | Thin pattern list for completed quests |
-| POST | `/submit` | Judge run/submit (+ optional guest snapshot fields) |
-| GET/PUT | `/progress` | Authenticated progress sync |
+| GET | `/api/health` | Liveness |
+| POST | `/api/auth/register` | Create account |
+| POST | `/api/auth/login` | JWT |
+| GET | `/api/auth/me` | Current user |
+| GET | `/api/campaigns/{id}` | Campaign + chapter metadata |
+| GET | `/api/quests/{id}` | Quest canon (public fields) + story slots |
+| GET | `/api/quests/{id}/hints?max_level=` | Progressive hint ladder |
+| GET | `/api/codex` | Thin pattern list for completed quests |
+| POST | `/api/submit` | Judge run/submit (+ optional guest snapshot fields) |
+| GET/PUT | `/api/progress` | Authenticated progress sync |
 
 Hidden tests never ship to the client in full if avoidable; prefer server-side evaluation. Hints are served progressively by level.
 
@@ -96,11 +98,12 @@ Hidden tests never ship to the client in full if avoidable; prefer server-side e
 
 Canon/story content is files, not necessarily DB rows, in early phases.
 
-## Judge0 CE (Docker)
+## Judge0 CE
 
-- Compose under `docker/` (Phase 0/1a implementation).
-- Backend env points at local Judge0.
+- Local: compose under `docker/` (Phase 0/1a).
+- Cloud: RapidAPI Judge0 CE via `JUDGE0_BASE_URL` + `JUDGE0_RAPIDAPI_KEY` (headers added when key is set).
 - Languages enabled: Python, JS, TS (map to Judge0 language ids in one adapter module).
+- Swap self-hosted ↔ RapidAPI with env only; routes unchanged.
 
 ## Scaling notes
 

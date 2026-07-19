@@ -48,6 +48,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: Mode }) {
           <input
             type="email"
             required
+            data-testid="auth-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full rounded-md border border-[rgba(232,220,200,0.15)] bg-[rgba(28,40,56,0.8)] px-3 py-2 text-[var(--color-paper)] outline-none focus:border-[var(--color-lamp)]"
@@ -61,6 +62,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: Mode }) {
             type="password"
             required
             minLength={6}
+            data-testid="auth-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 w-full rounded-md border border-[rgba(232,220,200,0.15)] bg-[rgba(28,40,56,0.8)] px-3 py-2 text-[var(--color-paper)] outline-none focus:border-[var(--color-lamp)]"
@@ -71,7 +73,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: Mode }) {
             {error}
           </p>
         )}
-        <Button type="submit" disabled={busy} className="w-full">
+        <Button type="submit" disabled={busy} className="w-full" data-testid="auth-submit">
           {busy ? 'Working…' : mode === 'login' ? 'Sign in' : 'Register'}
         </Button>
       </form>
